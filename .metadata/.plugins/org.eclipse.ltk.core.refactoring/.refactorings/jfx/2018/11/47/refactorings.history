@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename package &apos;jfx&apos; to &apos;jfxtest&apos;&#x0D;&#x0A;- Original project: &apos;jfx&apos;&#x0D;&#x0A;- Original element: &apos;jfx/src/jfx&apos;&#x0D;&#x0A;- Renamed element: &apos;jfx/src/jfxtest&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;jfx&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src&lt;jfx" name="jfxtest" qualified="false" references="true" stamp="1542653501668" textual="false" version="1.0"/>
+</session>
