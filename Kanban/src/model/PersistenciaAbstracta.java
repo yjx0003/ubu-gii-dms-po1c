@@ -1,15 +1,18 @@
 package model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class PersistenciaAbstracta {
 	
-	protected List<MiembroDeEquipo> miembros; 
-	protected List<SprintBacklog> sprints; 
+	protected Map<Integer,MiembroDeEquipo> miembros; 
+	protected SprintBacklog sprintBacklog; 
 	protected ProductBacklog productBacklog; 
 	
 
 	public PersistenciaAbstracta() {
+		this.miembros=new HashMap<Integer, MiembroDeEquipo>(); 
 	}
 	
 	
@@ -18,5 +21,22 @@ public abstract class PersistenciaAbstracta {
 	
 	public abstract void mostrarPersistencia(); 
 	
+	public abstract void commit(); 
+	
+	public Map<Integer,MiembroDeEquipo> getMiembros(){
+		return this.miembros; 
+	}
+	
+	public SprintBacklog getSprintBacklog(){
+		return this.sprintBacklog; 
+	}
+	
+	public ProductBacklog getProductBacklog(){
+		return this.productBacklog; 
+	}
+	
+	public void anadirTarea(Tarea t){
+		this.productBacklog.getTareas().put(t.getIdTarea(),t); 
+	}
 
 }

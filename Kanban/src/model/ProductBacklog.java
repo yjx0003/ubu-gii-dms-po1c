@@ -2,9 +2,11 @@ package model;
 
 public class ProductBacklog extends Backlog {
 	
-	private static ProductBacklog instance = null; 
+	private static ProductBacklog instance = null;
+	
 	
 	private ProductBacklog(){
+		
 		super(); 
 	}
 	

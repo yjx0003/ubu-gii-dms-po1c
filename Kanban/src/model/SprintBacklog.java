@@ -1,15 +1,25 @@
 package model;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar; 
 
 public class SprintBacklog extends Backlog {
-	private int idSprint; 
 	private String descripcion; 
-	private Date date; 
+	private Calendar fechaInicio; 
 	
-	public SprintBacklog(Date date, int idSprint, String descripcion){
-		this.date = date; 
-		this.idSprint = idSprint; 
+	
+	public SprintBacklog(Calendar fecha, String descripcion){
+		this.fechaInicio = fecha; 
 		this.descripcion = descripcion; 
+	}
+
+	public void reiniciarSprintBacklog(int dia, int mes, int ano, String descripcion) {
+		
+		this.fechaInicio = new GregorianCalendar(ano, mes, dia); 
+		this.descripcion = descripcion; 
+	}
+
+	public String getDescripcion() {
+		return this.descripcion; 
 	}
 }

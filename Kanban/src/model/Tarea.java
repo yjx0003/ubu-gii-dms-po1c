@@ -53,7 +53,10 @@ public class Tarea {
 		return miembro;
 	}
 	
-	
+	public EstadoTarea getEstado() {
+		return estado;
+	}
+
 	public void setIdTarea(int idTarea) {
 		this.idTarea = idTarea;
 	}
@@ -100,6 +103,10 @@ public class Tarea {
 //				&& this.descripcion == otraTarea.descripcion && this.titulo == otraTarea.titulo
 //				&& this.miembro.equals(otraTarea.miembro) && this.requisito.equals(otraTarea.requisito);
 
+	}
+
+	public void reiniciarEstado() {
+		estado = new EstadoTareaPendiente(); 
 	}
 
 }
