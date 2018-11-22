@@ -2,22 +2,12 @@ package model;
 
 public class Requisito {
 
-	private int idRequisito;
 	private String titulo;
 	private String descripcion;
 
-	public Requisito(int idRequisito, String titulo, String descripcion) {
-		this.idRequisito = idRequisito;
+	public Requisito(String titulo, String descripcion) {
 		this.titulo = titulo;
 		this.descripcion = descripcion;
-	}
-
-	public int getIdRequisito() {
-		return idRequisito;
-	}
-
-	public void setIdRequisito(int idRequisito) {
-		this.idRequisito = idRequisito;
 	}
 
 	public String getTitulo() {
@@ -45,8 +35,7 @@ public class Requisito {
 			return false;
 		}
 		Requisito r = (Requisito) obj;
-		return this.idRequisito == r.idRequisito && this.descripcion.equals(r.descripcion)
-				&& this.titulo.equals(r.titulo);
+		return this.descripcion.equals(r.descripcion) && this.titulo.equals(r.titulo);
 
 	}
 

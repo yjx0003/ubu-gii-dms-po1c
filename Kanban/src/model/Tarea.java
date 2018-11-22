@@ -1,11 +1,9 @@
 package model;
 
 public class Tarea {
-	private static int contadorIds = 0; 
+	private static int contadorIds; 
 	
 	private int idTarea; 
-	private String titulo;
-	private String descripcion;
 	private int coste;
 	private int beneficio;
 	private Requisito requisito;
@@ -13,10 +11,8 @@ public class Tarea {
 
 	private EstadoTarea estado; 
 
-	public Tarea(String titulo, String descripcion, int coste, int beneficio, Requisito requisito,MiembroDeEquipo miembro) {
+	public Tarea(int coste, int beneficio, Requisito requisito,MiembroDeEquipo miembro) {
 		this.idTarea= contadorIds++; 
-		this.titulo = titulo;
-		this.descripcion = descripcion;
 		this.coste = coste;
 		this.beneficio = beneficio;
 		this.requisito = requisito;
@@ -34,11 +30,11 @@ public class Tarea {
 	}
 
 	public String getTitulo() {
-		return titulo;
+		return this.requisito.getTitulo();
 	}
 
 	public String getDescripcion() {
-		return descripcion;
+		return this.requisito.getDescripcion();
 	}
 
 	public int getCoste() {
@@ -55,6 +51,31 @@ public class Tarea {
 
 	public MiembroDeEquipo getMiembro() {
 		return miembro;
+	}
+	
+	
+	public void setIdTarea(int idTarea) {
+		this.idTarea = idTarea;
+	}
+
+	public void setCoste(int coste) {
+		this.coste = coste;
+	}
+
+	public void setBeneficio(int beneficio) {
+		this.beneficio = beneficio;
+	}
+
+	public void setRequisito(Requisito requisito) {
+		this.requisito = requisito;
+	}
+
+	public void setMiembro(MiembroDeEquipo miembro) {
+		this.miembro = miembro;
+	}
+
+	public static void setContadorIds(int contador){
+		contadorIds = contador; 
 	}
 	
 	public void actualizarEstado(){

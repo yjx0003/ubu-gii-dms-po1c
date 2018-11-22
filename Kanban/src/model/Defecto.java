@@ -2,22 +2,21 @@ package model;
 
 public class Defecto extends Requisito {
 	
-	private Tarea tarea = null; 
+	private int tarea; 
 
-	public Defecto(int idRequisito, String titulo, String descripcion, Tarea tarea) {
-		super(idRequisito, titulo, descripcion);
+	public Defecto(String titulo, String descripcion, int tarea) {
+		super(titulo, descripcion);
 		this.tarea = tarea; 
 	}
 	
-	public Defecto(int idRequisito, String titulo, String descripcion) {
-		super(idRequisito, titulo, descripcion); 
-	}
+
 	
-	public void setTarea(Tarea t){
-		this.tarea = t; 
-	}
-	
-	public Tarea getTarea(){
+	public int getTarea(){
 		return this.tarea; 
+	}
+	
+	@Override
+	public String toString(){
+		return "Defecto encontrado en la tarea: "+tarea; 
 	}
 }

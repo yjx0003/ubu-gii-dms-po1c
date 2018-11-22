@@ -19,5 +19,8 @@ public class Backlog {
 		return false; 
 	}
 	
+	public Map<Integer,Tarea> getTareas(){
+		return this.tareas; 
+	}
 
 }
