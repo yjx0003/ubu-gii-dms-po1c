@@ -17,7 +17,17 @@ public class Tarea {
 		this.beneficio = beneficio;
 		this.requisito = requisito;
 		this.miembro = miembro;
-		this.estado = new EstadoTareaPendiente(); 
+		this.estado = EstadoTareaPendiente.getInstancia(); 
+		
+	}
+	
+	public Tarea(int idTarea, int coste, int beneficio, Requisito requisito,MiembroDeEquipo miembro) {
+		this.idTarea = idTarea; 
+		this.coste = coste;
+		this.beneficio = beneficio;
+		this.requisito = requisito;
+		this.miembro = miembro;
+		this.estado = EstadoTareaPendiente.getInstancia(); 
 		
 	}
 
@@ -99,14 +109,10 @@ public class Tarea {
 		}
 		Tarea otraTarea = (Tarea) obj;
 		return this.idTarea == otraTarea.idTarea; 
-//		return this.beneficio == otraTarea.beneficio && this.coste == otraTarea.coste
-//				&& this.descripcion == otraTarea.descripcion && this.titulo == otraTarea.titulo
-//				&& this.miembro.equals(otraTarea.miembro) && this.requisito.equals(otraTarea.requisito);
-
 	}
 
 	public void reiniciarEstado() {
-		estado = new EstadoTareaPendiente(); 
+		estado = EstadoTareaPendiente.getInstancia(); 
 	}
 
 }

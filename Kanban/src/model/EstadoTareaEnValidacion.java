@@ -2,15 +2,24 @@ package model;
 
 public class EstadoTareaEnValidacion extends EstadoTarea {
 	
+	private static EstadoTareaEnValidacion instancia = null; 
 	
-	public EstadoTareaEnValidacion() {
+	
+	private EstadoTareaEnValidacion() {
 		super();
 		this.nombreEstado = "En Validacion"; 
+	}
+	
+	public static EstadoTareaEnValidacion getInstancia(){
+		if(instancia == null){
+			instancia = new EstadoTareaEnValidacion(); 
+		}
+		return instancia; 
 	}
 
 	@Override
 	public void actualizarEstado(Tarea t){
-		t.cambiarEstado(new EstadoTareaCompletada());
+		t.cambiarEstado(EstadoTareaCompletada.getInstancia());
 	}
 
 }

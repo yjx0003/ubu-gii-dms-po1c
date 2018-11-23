@@ -13,6 +13,11 @@ public class MiembroDeEquipo {
 		this.nombre = nombre; 
 	}
 	
+	public MiembroDeEquipo(int id, String nombre){
+		this.nombre = nombre; 
+		this.idMiembro = id; 
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}

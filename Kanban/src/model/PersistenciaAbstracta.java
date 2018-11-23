@@ -19,8 +19,6 @@ public abstract class PersistenciaAbstracta {
 	
 	public abstract void leerPersistencia(); 
 	
-	public abstract void mostrarPersistencia(); 
-	
 	public abstract void commit(); 
 	
 	public Map<Integer,MiembroDeEquipo> getMiembros(){
@@ -35,6 +33,24 @@ public abstract class PersistenciaAbstracta {
 		return this.productBacklog; 
 	}
 	
+	public void setMiembros(Map<Integer, MiembroDeEquipo> miembros) {
+		this.miembros = miembros;
+	}
+
+
+
+	public void setSprintBacklog(SprintBacklog sprintBacklog) {
+		this.sprintBacklog = sprintBacklog;
+	}
+
+
+
+	public void setProductBacklog(ProductBacklog productBacklog) {
+		this.productBacklog = productBacklog;
+	}
+
+
+
 	public void anadirTarea(Tarea t){
 		this.productBacklog.getTareas().put(t.getIdTarea(),t); 
 	}
