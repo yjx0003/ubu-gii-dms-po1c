@@ -20,10 +20,8 @@ public class Main {
 		vista.setControladorKanban(controlador);
 		
 		modelo.leerPersistencia();
-		
-		
+
 		vista.menuSprintBacklog(modelo.getSprintBacklog());
-		System.out.println("Holiwi");
 		
 		
 

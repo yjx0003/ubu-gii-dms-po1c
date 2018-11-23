@@ -15,8 +15,21 @@ public class InterfazUsuarioTexto {
 	private Controlador controladorKanban;
 
 	private int opcionUsuario;
+	
+	private static InterfazUsuarioTexto instancia = null; 
 
-	Scanner sc;
+	private Scanner sc;
+	
+	private InterfazUsuarioTexto(){
+		
+	}
+	
+	public static InterfazUsuarioTexto getInstancia(){
+		if(instancia == null){
+			instancia = new InterfazUsuarioTexto(); 
+		}
+		return instancia; 
+	}
 
 	public void menuPrincipal() {
 		System.out.println("********MENÚ SCRUM********\n");
@@ -167,14 +180,15 @@ public class InterfazUsuarioTexto {
 		System.out.println("*******SPRINT BACKLOG********\n");
 		System.out.println(sprintBacklog.getDescripcion());
 		for (Map.Entry<Integer, Tarea> par : sprintBacklog.getTareas().entrySet()) {
-			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo()+ "Estado: "+par.getValue().getEstado());
+			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo()+ " Estado: "+par.getValue().getEstado());
 		}
+		System.out.println("");
 		System.out.println("[1] Añadir tarea al Sprint.");
 		System.out.println("[2] Mover tarea."); 
 		System.out.println("[3] Crear nuevo Sprint."); 
 		System.out.println("[0] Atrás."); 
 		
-		System.out.println("Escoja una opción: ");
+		System.out.println("Escoja una opción o el ID de la tarea que quiere visualizar: ");
 		sc = new Scanner(System.in);
 		opcionUsuario = sc.nextInt();
 		do {
@@ -259,6 +273,54 @@ public class InterfazUsuarioTexto {
 		
 		if(opcionUsuario==1){
 			controladorKanban.anadirNuevoSprint(dia, mes, ano, descripcion); 
+		}
+		
+	}
+	
+	public void menuMiembros(Map<Integer,MiembroDeEquipo> miembros) {
+		System.out.println("*******MIEMBROS DE EQUIPO********\n");
+		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
+			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
+		}
+		System.out.println("[1] Añadir Miembro."); 
+		System.out.println("[0] Atrás."); 
+		
+		System.out.println("Escoja una opción: ");
+		sc = new Scanner(System.in);
+		opcionUsuario = sc.nextInt();
+		do {
+			if (opcionUsuario !=0 && opcionUsuario!=1) {
+				System.out.println("Opción incorrecta. Escoja una opción:  ");
+				opcionUsuario = sc.nextInt();
+			}
+		} while (opcionUsuario !=0 && opcionUsuario!=1);
+		sc.close();
+		
+	}
+	
+	public void menuAnadirMiembro(){
+		System.out.println("*******CREAR NUEVO MIEMBRO*******\n");
+		sc = new Scanner(System.in);
+		System.out.println("Nombre: ");
+		String nombre = sc.nextLine(); 
+		
+		System.out.print("¿Desea crear un miembro con el nobmre "+nombre+"?");
+		System.out.println("[1] Crear miembro."); 
+		System.out.println("[0] Cancelar."); 
+		
+		System.out.println("Escoja una opción: ");
+		sc = new Scanner(System.in);
+		opcionUsuario = sc.nextInt();
+		do {
+			if (opcionUsuario !=0 && opcionUsuario!=1) {
+				System.out.println("Opción incorrecta. Escoja una opción:  ");
+				opcionUsuario = sc.nextInt();
+			}
+		} while (opcionUsuario !=0 && opcionUsuario!=1);
+		sc.close();
+		
+		if(opcionUsuario == 1){
+			controladorKanban.anadirNuevoMiembro(nombre); 
 		}
 		
 	}
