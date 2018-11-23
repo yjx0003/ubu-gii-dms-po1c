@@ -1,0 +1,8 @@
+#ID,#Coste,#Beneficio,#Titulo,#Descripcion,#Miembro asignado,#Tipo,#Actor/Tarea Anterior
+31
+25,13,6,Tarea 6,Descripcion 6,3,1,1
+26,21,7,Tarea 7,Descripcion 7,1,0,Cliente
+27,3,8,Tarea 8,Descripcion 8,2,1,2
+28,5,9,Tarea 9,Descripcion 9,0,0,Administrador
+29,8,10,Tarea 10,Descripcion 10,1,1,2
+30,21,11,Tarea 11,Descripcion 11,2,1,3

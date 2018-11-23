@@ -10,7 +10,7 @@ public class ProductBacklog extends Backlog {
 		super(); 
 	}
 	
-	public static ProductBacklog getInstance(){
+	public static ProductBacklog getInstancia(){
 		if(instance == null){
 			instance = new ProductBacklog(); 
 		}

@@ -9,16 +9,34 @@ import model.HistoriaDeUsuario;
 import model.PersistenciaAbstracta;
 import model.Requisito;
 import model.Tarea;
+import model.MiembroDeEquipo;
 import view.InterfazUsuarioTexto;
 
 public class Controlador {
+	
 
 	private PersistenciaAbstracta modeloKanban;
 	private InterfazUsuarioTexto vistaKanban;
+	
+	private static Controlador instancia = null; 
 
-	public Controlador(PersistenciaAbstracta modelo, InterfazUsuarioTexto vista) {
-		this.modeloKanban = modelo;
-		this.vistaKanban = vista;
+	private Controlador() {
+
+	}
+	
+	public static Controlador getInstancia(){
+		if(instancia == null){
+			instancia = new Controlador(); 
+		}
+		return instancia; 
+	}
+	
+	public void setModeloKanban(PersistenciaAbstracta modelo){
+		this.modeloKanban = modelo; 
+	}
+	
+	public void setVistaKanban(InterfazUsuarioTexto vista){
+		this.vistaKanban= vista; 
 	}
 
 	public void modificarTarea(int idTarea, String nuevoTitulo, String nuevaDescripcion, String nuevoCoste, String nuevoBeneficio,String nuevoMiembro, Backlog backlog) {
@@ -79,6 +97,11 @@ public class Controlador {
 		}
 		modeloKanban.getSprintBacklog().reiniciarSprintBacklog(dia, mes, ano, descripcion); 
 		
+	}
+
+	public void anadirNuevoMiembro(String nombre) {
+		MiembroDeEquipo m = new MiembroDeEquipo(nombre); 
+		modeloKanban.getMiembros().put(m.getIdMiembro(), m); 
 	}
 	
 }
