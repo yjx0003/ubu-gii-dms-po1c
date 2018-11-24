@@ -2,28 +2,27 @@ package controller;
 
 import java.util.Map;
 
+
 import model.Backlog;
 import model.Defecto;
 import model.EstadoTareaCompletada;
 import model.HistoriaDeUsuario;
+import model.MiembroDeEquipo;
 import model.PersistenciaAbstracta;
 import model.Requisito;
 import model.Tarea;
-import model.MiembroDeEquipo;
 import view.InterfazUsuarioTexto;
 
 public class Controlador {
 	
-
 	private PersistenciaAbstracta modeloKanban;
 	private InterfazUsuarioTexto vistaKanban;
-	
-	private EstadoControlador estado = EstadoControladorPrincipal.getInstancia(); 
+	private EstadoControlador estado;
 	
 	private static Controlador instancia = null; 
 
 	private Controlador() {
-
+		estado = EstadoControladorPrincipal.getInstancia(); 
 	}
 	
 	public static Controlador getInstancia(){
@@ -37,7 +36,13 @@ public class Controlador {
 		this.estado =e; 
 	}
 	
-	public void init(){
+	public void init(InterfazUsuarioTexto vista, PersistenciaAbstracta modelo){
+		this.vistaKanban=vista;
+		this.modeloKanban=modelo;
+		
+		modeloKanban.leerPersistencia();
+		vistaKanban.init(this);
+		
 		while(true){
 			estado.mostrarMenu(this);
 			estado.actualizarEstado(this);
@@ -54,14 +59,6 @@ public class Controlador {
 
 	public EstadoControlador getEstado() {
 		return estado;
-	}
-
-	public void setModeloKanban(PersistenciaAbstracta modelo){
-		this.modeloKanban = modelo; 
-	}
-	
-	public void setVistaKanban(InterfazUsuarioTexto vista){
-		this.vistaKanban= vista; 
 	}
 
 	public void modificarTarea(int idTarea, String nuevoTitulo, String nuevaDescripcion, String nuevoCoste, String nuevoBeneficio,String nuevoMiembro, Backlog backlog) {
@@ -127,6 +124,13 @@ public class Controlador {
 	public void anadirNuevoMiembro(String nombre) {
 		MiembroDeEquipo m = new MiembroDeEquipo(nombre); 
 		modeloKanban.getMiembros().put(m.getIdMiembro(), m); 
+	}
+
+	public void close() {
+		vistaKanban.cerrarRecursos();
+		modeloKanban.commit();
+		System.exit(0);
+		
 	}
 	
 }

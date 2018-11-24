@@ -14,16 +14,11 @@ public class Main {
 		
 		Controlador controlador = Controlador.getInstancia(); 
 		
-		controlador.setModeloKanban(modelo);
-		controlador.setVistaKanban(vista);
-		
-		vista.setControladorKanban(controlador);
-		
-		modelo.leerPersistencia();
 
-		controlador.init();
+
+		controlador.init(vista,modelo);
 		
-		//modelo.commit();
+		
 		
 
 	}

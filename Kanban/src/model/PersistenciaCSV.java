@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Map;
+
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -53,7 +53,7 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 			MiembroDeEquipo.setContadorIds(contador);
 			fila = csvReader.readNext();
-			while (fila != null) {
+			while (fila != null&& !fila[0].isEmpty()) {
 				int id = Integer.parseInt(fila[0]);
 				String nombre = fila[1];
 				MiembroDeEquipo m = new MiembroDeEquipo(id, nombre);
@@ -92,7 +92,7 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 			fila = csvReader.readNext();
 
-			while (fila != null) {
+			while (fila != null && !fila[0].isEmpty()) {
 
 				int id = Integer.parseInt(fila[0]);
 				int coste = Integer.parseInt(fila[1]);
@@ -154,7 +154,7 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 			fila = csvReader.readNext();
 
-			while (fila != null) {
+			while (fila != null && !fila[0].isEmpty()) {
 
 				int id = Integer.parseInt(fila[0]);
 				int coste = Integer.parseInt(fila[1]);
@@ -214,7 +214,7 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 		commitSprintBacklog();
 	}
 
-	public void commitMiembrosDeEquipo() {
+	private void commitMiembrosDeEquipo() {
 		try {
 			
 			CSVWriter writer = new CSVWriter(new FileWriter(this.fileMiembroDeEquipo), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
@@ -240,7 +240,7 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 		}
 	}
 	
-	public void commitProductBacklog() {
+	private void commitProductBacklog() {
 		try {
 			
 			CSVWriter writer = new CSVWriter(new FileWriter(this.fileProductBacklog), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
@@ -281,7 +281,7 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 			e.printStackTrace();
 		}
 	}
-	public void commitSprintBacklog() {
+	private void commitSprintBacklog() {
 		try {
 			CSVWriter writer = new CSVWriter(new FileWriter(this.fileSprintBacklog), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
 					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);

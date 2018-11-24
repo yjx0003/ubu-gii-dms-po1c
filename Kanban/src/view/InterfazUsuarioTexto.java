@@ -1,9 +1,9 @@
 package view;
 
-import java.util.InputMismatchException;
+
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.IntStream;
+
 
 import controller.Controlador;
 import model.Backlog;
@@ -39,27 +39,30 @@ public class InterfazUsuarioTexto {
 
 	private int opcionMenu(String preguntaOpcion, Map<Integer, ?> mapa, int... numValidos) {
 		
-		sc = new Scanner(System.in);
+	
 		while (true) {
 			try {
 				
 				System.out.println(preguntaOpcion);
 
-				int opcion = sc.nextInt();
+				int opcion =Integer.valueOf(sc.next());
+				
 				
 				if (ArrayIntContains(numValidos, opcion)
 						|| (mapa != null && mapa.containsKey(opcion))) {
-					sc.close();
 					return opcion;
 				}
 				System.out.println(opcion + " no es un número válido");
 
-			} catch (InputMismatchException e) {
+			} catch (NumberFormatException e) {
 				System.out.println("Tiene que ser un número");
-				sc.nextLine(); //Limpiamos buffer del teclado
+				
 			}
 
 		}
+	}
+	public void cerrarRecursos() {
+		sc.close();
 	}
 	private boolean ArrayIntContains(int[] valores,int buscado) {
 		for(int v:valores) {
@@ -78,7 +81,8 @@ public class InterfazUsuarioTexto {
 		System.out.println("[1] Product Backlog");
 		System.out.println("[2] Sprint Backlog");
 		System.out.println("[3] Gestión de Miembros ");
-		this.opcionUsuario = opcionMenu("Eliga una opción: ", 1, 2, 3);
+		System.out.println("[4] Guardar y cerrar");
+		this.opcionUsuario = opcionMenu("Eliga una opción: ", 1, 2, 3,4);
 
 	}
 
@@ -117,7 +121,7 @@ public class InterfazUsuarioTexto {
 		System.out.println("Asignada a: " + t.getMiembro());
 		System.out.println(t.getRequisito());
 
-		sc = new Scanner(System.in);
+		
 		System.out.println("**Se deben dejar los campos vacíos si no se quieren modificar. **");
 
 		System.out.println("Nuevo título: ");
@@ -149,7 +153,7 @@ public class InterfazUsuarioTexto {
 	}
 
 	public void menuAnadirTarea(Map<Integer, MiembroDeEquipo> miembros) {
-		sc = new Scanner(System.in);
+		
 
 		System.out.println("Nuevo título: ");
 		String nuevoTitulo = sc.nextLine();
@@ -249,7 +253,7 @@ public class InterfazUsuarioTexto {
 
 	public void menuCrearNuevoSprint() {
 		System.out.println("*******CREAR NUEVO SPRINT********\n");
-		sc = new Scanner(System.in);
+		
 		System.out.println("Día del mes: ");
 		int dia = sc.nextInt();
 		System.out.println("Mes: ");
@@ -287,11 +291,11 @@ public class InterfazUsuarioTexto {
 
 	public void menuAnadirMiembro() {
 		System.out.println("*******CREAR NUEVO MIEMBRO*******\n");
-		sc = new Scanner(System.in);
+
 		System.out.println("Nombre: ");
 		String nombre = sc.nextLine();
 
-		System.out.print("¿Desea crear un miembro con el nobmre " + nombre + "?");
+		System.out.println("¿Desea crear un miembro con el nobmre " + nombre + "?");
 		System.out.println("[1] Crear miembro.");
 		System.out.println("[0] Cancelar.");
 
@@ -304,7 +308,8 @@ public class InterfazUsuarioTexto {
 
 	}
 
-	public void setControladorKanban(Controlador controlador) {
+	public void init(Controlador controlador) {
+		this.sc=new Scanner(System.in);
 		this.controladorKanban = controlador;
 	}
 

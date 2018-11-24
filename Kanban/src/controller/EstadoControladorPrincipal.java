@@ -26,6 +26,8 @@ public class EstadoControladorPrincipal extends EstadoControlador{
 			c.cambiarEstado(EstadoControladorSprintBacklog.getInstancia());break; 
 		case 3: 
 			c.cambiarEstado(EstadoControladorMiembros.getInstancia());break; 
+		case 4:
+			c.cambiarEstado(EstadoControladorCerrar.getInstancia());break;
 		}
 	}
 
