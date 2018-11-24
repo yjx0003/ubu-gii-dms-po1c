@@ -45,7 +45,7 @@ public class InterfazUsuarioTexto {
 				
 				System.out.println(preguntaOpcion);
 
-				int opcion =Integer.valueOf(sc.next());
+				int opcion =Integer.valueOf(sc.nextLine());
 				
 				
 				if (ArrayIntContains(numValidos, opcion)
@@ -135,18 +135,9 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
-		System.out.println("Nuevo miembro: ");
-		String nuevoMiembro = sc.nextLine();
-		if (!nuevoMiembro.isEmpty()) {
-			do {
-				if (!miembros.containsKey(nuevoMiembro)) {
-					System.out.println("Opción incorrecta. Nuevo Miembro: ");
-					opcionUsuario = sc.nextInt();
-				}
-			} while (!miembros.containsKey(nuevoMiembro));
-		}
-		sc.close();
-
+		System.out.println("[0] Mantener miembro");
+		int nuevoMiembro=opcionMenu("Nuevo miembro", miembros,0);
+		
 		controladorKanban.modificarTarea(t.getIdTarea(), nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
 				nuevoMiembro, backlog);
 
@@ -166,16 +157,7 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
-		System.out.println("Nuevo miembro: ");
-		String nuevoMiembro = sc.nextLine();
-		if (!nuevoMiembro.isEmpty()) {
-			do {
-				if (!miembros.containsKey(nuevoMiembro)) {
-					System.out.println("Opción incorrecta. Nuevo Miembro: ");
-					nuevoMiembro = sc.nextLine();
-				}
-			} while (!miembros.containsKey(nuevoMiembro));
-		}
+		int nuevoMiembro=opcionMenu("Nuevo miembro", miembros);
 		System.out.println("Tipo de requisito asociado: ");
 		System.out.println("[1] Historia de Usuario");
 		System.out.println("[2] Defecto");

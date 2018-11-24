@@ -61,7 +61,7 @@ public class Controlador {
 		return estado;
 	}
 
-	public void modificarTarea(int idTarea, String nuevoTitulo, String nuevaDescripcion, String nuevoCoste, String nuevoBeneficio,String nuevoMiembro, Backlog backlog) {
+	public void modificarTarea(int idTarea, String nuevoTitulo, String nuevaDescripcion, String nuevoCoste, String nuevoBeneficio,int nuevoMiembro, Backlog backlog) {
 		Tarea tarea = backlog.getTareas().get(idTarea); 
 		if(!nuevoTitulo.isEmpty()){
 			tarea.getRequisito().setTitulo(nuevoTitulo);
@@ -75,14 +75,14 @@ public class Controlador {
 		if(!nuevoBeneficio.isEmpty()){ 
 			tarea.setBeneficio(Integer.parseInt(nuevoBeneficio));
 		}
-		if(!nuevoMiembro.isEmpty()){ 			
-			tarea.setMiembro(modeloKanban.getMiembros().get(Integer.parseInt(nuevoBeneficio)));
+		if(nuevoMiembro!=0){ //mantener el miembro si es 0			
+			tarea.setMiembro(modeloKanban.getMiembros().get(nuevoMiembro));
 		}
 	}
 
 	public boolean anadirTarea(String nuevoTitulo, String nuevaDescripcion, String nuevoCoste, String nuevoBeneficio,
-			String nuevoMiembro, String actor, String tarea) {
-		if(nuevoTitulo.isEmpty()||nuevaDescripcion.isEmpty()||nuevoCoste.isEmpty()||nuevoBeneficio.isEmpty()||nuevoMiembro.isEmpty()){
+			int nuevoMiembro, String actor, String tarea) {
+		if(nuevoTitulo.isEmpty()||nuevaDescripcion.isEmpty()||nuevoCoste.isEmpty()||nuevoBeneficio.isEmpty()||nuevoMiembro==0){
 			return false; 
 		}
 		try{
@@ -93,7 +93,7 @@ public class Controlador {
 		}else{
 			nuevoRequisito = new Defecto(nuevoTitulo, nuevaDescripcion, Integer.parseInt(tarea)); 
 		}
-		Tarea nuevaTarea = new Tarea(Integer.parseInt(nuevoCoste), Integer.parseInt(nuevoBeneficio), nuevoRequisito, modeloKanban.getMiembros().get(Integer.parseInt(nuevoMiembro))); 
+		Tarea nuevaTarea = new Tarea(Integer.parseInt(nuevoCoste), Integer.parseInt(nuevoBeneficio), nuevoRequisito, modeloKanban.getMiembros().get(nuevoMiembro)); 
 		modeloKanban.anadirTarea(nuevaTarea); 
 		return true; 
 		}catch(Exception e){
