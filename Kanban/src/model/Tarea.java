@@ -66,7 +66,10 @@ public class Tarea {
 	public EstadoTarea getEstado() {
 		return estado;
 	}
-
+	public static int getContadorIds() {
+	
+		return contadorIds;
+	}
 	public void setIdTarea(int idTarea) {
 		this.idTarea = idTarea;
 	}
@@ -114,5 +117,7 @@ public class Tarea {
 	public void reiniciarEstado() {
 		estado = EstadoTareaPendiente.getInstancia(); 
 	}
+
+
 
 }

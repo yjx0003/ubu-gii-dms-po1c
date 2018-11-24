@@ -34,4 +34,7 @@ public class SprintBacklog extends Backlog {
 	public String getDescripcion() {
 		return this.descripcion; 
 	}
+	public Calendar getFechaInicio() {
+		return fechaInicio;
+	}
 }

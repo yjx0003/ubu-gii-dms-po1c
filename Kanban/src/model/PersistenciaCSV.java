@@ -2,11 +2,15 @@ package model;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map;
+
 import com.opencsv.CSVReader;
-import java.util.Calendar; 
-import java.util.GregorianCalendar; 
+import com.opencsv.CSVWriter;
 
 public class PersistenciaCSV extends PersistenciaAbstracta {
 
@@ -25,14 +29,13 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 	@Override
 	public void leerPersistencia() {
-		leerMiembros(); 
-		leerProductBacklog(); 
-		leerSprintBacklog(); 
+		leerMiembros();
+		leerProductBacklog();
+		leerSprintBacklog();
 	}
 
-	public void leerMiembros() {
+	private void leerMiembros() {
 		try {
-
 			String archCSV = "csv/MiembroDeEquipo.csv";
 			CSVReader csvReader;
 
@@ -52,8 +55,8 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 				String nombre = fila[1];
 				MiembroDeEquipo m = new MiembroDeEquipo(id, nombre);
 				miembros.put(id, m);
-				
-				fila = csvReader.readNext(); 
+
+				fila = csvReader.readNext();
 			}
 			csvReader.close();
 
@@ -64,11 +67,11 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 		}
 
 	}
-	
-	public void leerProductBacklog() {
+
+	private void leerProductBacklog() {
 		try {
-			
-			productBacklog = ProductBacklog.getInstancia();  
+
+			productBacklog = ProductBacklog.getInstancia();
 
 			String archCSV = "csv/ProductBacklog.csv";
 			CSVReader csvReader;
@@ -83,35 +86,36 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 			int contador = Integer.parseInt(fila[0]);
 
 			Tarea.setContadorIds(contador);
-			
+
 			fila = csvReader.readNext();
-			
+
 			while (fila != null) {
-				
-				int id = Integer.parseInt(fila[0]); 
-				int coste = Integer.parseInt(fila[1]); 
-				int beneficio = Integer.parseInt(fila[2]); 
-				String titulo = fila[3]; 
-				String descripcion = fila[4]; 
-				int idMiembro = Integer.parseInt(fila[5]); 
-				int tipoDeRequisito = Integer.parseInt(fila[6]); 
-				Requisito r = null; 
-				switch(tipoDeRequisito){
-				case 0: 
-					String actor = fila[7]; 
-					r = new HistoriaDeUsuario(titulo, descripcion, actor); 
-					break; 
-				case 1: 
-					int tareaAsociada = Integer.parseInt(fila[7]); 
-					r = new Defecto(titulo, descripcion, tareaAsociada); 
-					break; 
+
+				int id = Integer.parseInt(fila[0]);
+				int coste = Integer.parseInt(fila[1]);
+				int beneficio = Integer.parseInt(fila[2]);
+				String titulo = fila[3];
+				String descripcion = fila[4];
+				int idMiembro = Integer.parseInt(fila[5]);
+				int tipoDeRequisito = Integer.parseInt(fila[6]);
+				Requisito r = null;
+				switch (tipoDeRequisito) {
+				case 0:
+					String actor = fila[7];
+					r = new HistoriaDeUsuario(titulo, descripcion, actor);
+					break;
+				case 1:
+					int tareaAsociada = Integer.parseInt(fila[7]);
+					r = new Defecto(titulo, descripcion, tareaAsociada);
+					break;
 				}
-				Tarea t = new Tarea(id, coste, beneficio, r, miembros.get(idMiembro)); 
-				productBacklog.anadirTarea(t); 
+				Tarea t = new Tarea(id, coste, beneficio, r, miembros.get(idMiembro));
 				
-				fila = csvReader.readNext(); 
+				productBacklog.anadirTarea(t);
+
+				fila = csvReader.readNext();
 			}
-			
+
 			csvReader.close();
 
 		} catch (FileNotFoundException e) {
@@ -121,11 +125,11 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 		}
 
 	}
-	
-	public void leerSprintBacklog() {
+
+	private void leerSprintBacklog() {
 		try {
-			
-			sprintBacklog = SprintBacklog.getInstancia(); 
+
+			sprintBacklog = SprintBacklog.getInstancia();
 
 			String archCSV = "csv/SprintBacklog.csv";
 			CSVReader csvReader;
@@ -135,56 +139,61 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 			String[] fila = null;
 
 			csvReader.readNext(); // saltar titulos
-			
-			fila = csvReader.readNext(); 
-			
-			String descripcionSprint = fila[0]; 
-			int dia = Integer.parseInt(fila[1]); 
-			int mes = Integer.parseInt(fila[2]); 
-			int ano = Integer.parseInt(fila[3]); 
-			Calendar fechaInicio =new  GregorianCalendar(ano, mes, dia); 
+
+			fila = csvReader.readNext();
+
+			String descripcionSprint = fila[0];
+			int dia = Integer.parseInt(fila[1]);
+			int mes = Integer.parseInt(fila[2]);
+			int ano = Integer.parseInt(fila[3]);
+			Calendar fechaInicio = new GregorianCalendar(ano, mes, dia);
 			sprintBacklog.iniciar(descripcionSprint, fechaInicio);
 
-			fila = csvReader.readNext(); 
-			
+			fila = csvReader.readNext();
+
 			while (fila != null) {
-				
-				int id = Integer.parseInt(fila[0]); 
-				int coste = Integer.parseInt(fila[1]); 
-				int beneficio = Integer.parseInt(fila[2]); 
-				String titulo = fila[3]; 
-				String descripcion = fila[4]; 
-				int idMiembro = Integer.parseInt(fila[5]); 
-				String estado = fila[6]; 
-				int tipoDeRequisito = Integer.parseInt(fila[7]); 
-				Requisito r = null; 
-				switch(tipoDeRequisito){
-				case 0: 
-					String actor = fila[8]; 
-					r = new HistoriaDeUsuario(titulo, descripcion, actor); 
-					break; 
-				case 1: 
-					int tareaAsociada = Integer.parseInt(fila[8]); 
-					r = new Defecto(titulo, descripcion, tareaAsociada); 
-					break; 
+
+				int id = Integer.parseInt(fila[0]);
+				int coste = Integer.parseInt(fila[1]);
+				int beneficio = Integer.parseInt(fila[2]);
+				String titulo = fila[3];
+				String descripcion = fila[4];
+				int idMiembro = Integer.parseInt(fila[5]);
+				String estado = fila[6];
+				int tipoDeRequisito = Integer.parseInt(fila[7]);
+				Requisito r = null;
+				switch (tipoDeRequisito) {
+				case 0:
+					String actor = fila[8];
+					r = new HistoriaDeUsuario(titulo, descripcion, actor);
+					break;
+				case 1:
+					int tareaAsociada = Integer.parseInt(fila[8]);
+					r = new Defecto(titulo, descripcion, tareaAsociada);
+					break;
 				}
-				Tarea t = new Tarea(id, coste, beneficio, r, miembros.get(idMiembro)); 
-				switch(estado){
-				case "Pendiente": 
-					t.cambiarEstado(EstadoTareaPendiente.getInstancia()); break; 
-				case "En Proceso": 
-					t.cambiarEstado(EstadoTareaEnProceso.getInstancia());break; 
-				case "En Validacion": 
-					t.cambiarEstado(EstadoTareaEnValidacion.getInstancia());break; 
-				case "Completada": 
-					t.cambiarEstado(EstadoTareaCompletada.getInstancia());break; 
+				Tarea t = new Tarea(id, coste, beneficio, r, miembros.get(idMiembro));
+				
+				switch (estado) {
+				case "Pendiente":
+					t.cambiarEstado(EstadoTareaPendiente.getInstancia());
+					break;
+				case "En Proceso":
+					t.cambiarEstado(EstadoTareaEnProceso.getInstancia());
+					break;
+				case "En Validacion":
+					t.cambiarEstado(EstadoTareaEnValidacion.getInstancia());
+					break;
+				case "Completada":
+					t.cambiarEstado(EstadoTareaCompletada.getInstancia());
+					break;
 				}
+
+				sprintBacklog.anadirTarea(t);
 				
-				sprintBacklog.anadirTarea(t); 
-				
-				fila = csvReader.readNext(); 
+				fila = csvReader.readNext();
 			}
-			
+
 			csvReader.close();
 
 		} catch (FileNotFoundException e) {
@@ -197,7 +206,120 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 	@Override
 	public void commit() {
-		// TODO Auto-generated method stub
+		commitMiembrosDeEquipo();
+		commitProductBacklog();
+		commitSprintBacklog();
 	}
 
+	public void commitMiembrosDeEquipo() {
+		try {
+			String archCSV = "csv/MiembrosDeEquipo.csv";
+			CSVWriter writer = new CSVWriter(new FileWriter(archCSV), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
+					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+			
+			String[] header = { "#ID", "#nombre" };
+			writer.writeNext(header);
+			
+			// Valor actual de contador id
+			String contadorId=Integer.toString(MiembroDeEquipo.getContadorIds());
+			writer.writeNext(new String[] { contadorId});
+
+			for (MiembroDeEquipo m : miembros.values()) {
+				String id = Integer.toString(m.getIdMiembro());
+				String nombre = m.getNombre();
+				writer.writeNext(new String[] { id, nombre });
+			}
+			writer.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void commitProductBacklog() {
+		try {
+			String archCSV = "csv/ProductBacklog2.csv";
+			CSVWriter writer = new CSVWriter(new FileWriter(archCSV), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
+					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+			
+			String[] header = { "#ID","#Coste","#Beneficio","#Titulo","#Descripcion","#Miembro asignado","#Tipo","#Actor/Tarea Anterior" };
+			writer.writeNext(header);
+			
+			// Valor actual de contador id
+			String contadorId=Integer.toString(Tarea.getContadorIds());
+			writer.writeNext(new String[] { contadorId});
+
+			for (Tarea t : productBacklog.getTareas().values()) {
+				String id = Integer.toString(t.getIdTarea());
+				String coste= Integer.toString(t.getCoste());
+				String beneficio= Integer.toString(t.getBeneficio());
+				String titulo=t.getTitulo();
+				String descripcion=t.getDescripcion();
+				String miembroAsignado=Integer.toString(t.getMiembro().getIdMiembro());
+				String tipo=null;
+				String actorOTarea=null;
+				if (t.getRequisito() instanceof HistoriaDeUsuario) {
+					tipo="0";
+					HistoriaDeUsuario h=(HistoriaDeUsuario)t.getRequisito();
+					actorOTarea =h.getActor();
+				}else {
+					tipo="1";
+					Defecto d=(Defecto)t.getRequisito();
+					actorOTarea=Integer.toString(d.getTarea());
+				}
+				
+				writer.writeNext(new String[] { id,coste,beneficio,titulo,descripcion,miembroAsignado,tipo,actorOTarea });
+			}
+			writer.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void commitSprintBacklog() {
+		try {
+			String archCSV = "csv/SprintBacklog2.csv";
+			CSVWriter writer = new CSVWriter(new FileWriter(archCSV), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
+					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
+			
+			String[] header = { "#ID","#Coste","#Beneficio","#Titulo","#Descripcion","#Miembro asignado","#Estado","#Tipo","#Actor/Tarea Anterior" };
+			writer.writeNext(header);
+			Calendar fechaInicio=sprintBacklog.getFechaInicio();
+			String ano=Integer.toString(fechaInicio.get(Calendar.YEAR));
+			String mes=Integer.toString(fechaInicio.get(Calendar.MONTH));
+			String dia=Integer.toString(fechaInicio.get(Calendar.DAY_OF_MONTH));
+			writer.writeNext(new String[] {sprintBacklog.getDescripcion(),dia,mes,ano});
+
+			for (Tarea t : sprintBacklog.getTareas().values()) {
+				String id = Integer.toString(t.getIdTarea());
+				String coste= Integer.toString(t.getCoste());
+				String beneficio= Integer.toString(t.getBeneficio());
+				String titulo=t.getTitulo();
+				String descripcion=t.getDescripcion();
+				String miembroAsignado=Integer.toString(t.getMiembro().getIdMiembro());
+				String tipo=null;
+				String actorOTarea=null;
+				String estado=t.getEstado().toString();
+				if (t.getRequisito() instanceof HistoriaDeUsuario) {
+					tipo="0";
+					HistoriaDeUsuario h=(HistoriaDeUsuario)t.getRequisito();
+					actorOTarea =h.getActor();
+				}else {
+					tipo="1";
+					Defecto d=(Defecto)t.getRequisito();
+					actorOTarea=Integer.toString(d.getTarea());
+				}
+				
+				writer.writeNext(new String[] { id,coste,beneficio,titulo,descripcion,miembroAsignado,estado,tipo,actorOTarea });
+			}
+			writer.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

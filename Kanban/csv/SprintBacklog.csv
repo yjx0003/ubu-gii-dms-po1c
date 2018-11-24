@@ -1,7 +1,7 @@
 #ID,#Coste,#Beneficio,#Titulo,#Descripcion,#Miembro asignado,#Estado,#Tipo,#Actor/Tarea Anterior
 Descripcion del sprint,10,11,2018
-20,1,1,Tarea 1,Descripcion 1,0,Completado,0,Cliente
-21,2,2,Tarea 2,Descripcion 2,1,En Validacion,1,0
-22,3,3,Tarea 3,Descripcion 3,2,En Validacion,0,Administrador
-23,5,4,Tarea 4,Descripcion 4,3,En Prorceso,1,1
-24,8,5,Tarea 5,Descripcion 5,0,Pendiente,0,Programador
+20,1,1,Tarea 1,Descripcion 1,20,Completado,0,Cliente
+21,2,2,Tarea 2,Descripcion 2,21,En Validacion,1,0
+22,3,3,Tarea 3,Descripcion 3,22,En Validacion,0,Administrador
+23,5,4,Tarea 4,Descripcion 4,23,En Prorceso,1,1
+24,8,5,Tarea 5,Descripcion 5,20,Pendiente,0,Programador

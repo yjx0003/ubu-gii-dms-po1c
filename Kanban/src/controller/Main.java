@@ -10,7 +10,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		InterfazUsuarioTexto vista = InterfazUsuarioTexto.getInstancia();
-		PersistenciaAbstracta modelo = PersistenciaCSV.getInstancia(); 
+		PersistenciaCSV modelo = PersistenciaCSV.getInstancia(); 
 		
 		Controlador controlador = Controlador.getInstancia(); 
 		
@@ -21,8 +21,9 @@ public class Main {
 		
 		modelo.leerPersistencia();
 
-		vista.menuSprintBacklog(modelo.getSprintBacklog());
+		//vista.menuSprintBacklog(modelo.getSprintBacklog());
 		
+		modelo.commit();
 		
 
 	}

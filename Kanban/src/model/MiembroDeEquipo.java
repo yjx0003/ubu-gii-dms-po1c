@@ -28,6 +28,9 @@ public class MiembroDeEquipo {
 	public static void setContadorIds(int contador){
 		contadorIds = contador; 
 	}
+	public static int getContadorIds() {
+		return contadorIds;
+	}
 	
 	@Override
 	public boolean equals(Object obj){
