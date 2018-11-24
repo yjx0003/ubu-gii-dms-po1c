@@ -21,7 +21,7 @@ public class Main {
 		
 		modelo.leerPersistencia();
 
-		//vista.menuSprintBacklog(modelo.getSprintBacklog());
+		//vista.menuPrincipal();
 		
 		modelo.commit();
 		

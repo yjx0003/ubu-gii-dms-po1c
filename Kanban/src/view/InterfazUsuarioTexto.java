@@ -1,7 +1,9 @@
 package view;
 
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 import controller.Controlador;
 import model.Backlog;
@@ -15,20 +17,56 @@ public class InterfazUsuarioTexto {
 	private Controlador controladorKanban;
 
 	private int opcionUsuario;
-	
-	private static InterfazUsuarioTexto instancia = null; 
+
+	private static InterfazUsuarioTexto instancia = null;
 
 	private Scanner sc;
-	
-	private InterfazUsuarioTexto(){
-		
+
+	private InterfazUsuarioTexto() {
+
 	}
-	
-	public static InterfazUsuarioTexto getInstancia(){
-		if(instancia == null){
-			instancia = new InterfazUsuarioTexto(); 
+
+	public static InterfazUsuarioTexto getInstancia() {
+		if (instancia == null) {
+			instancia = new InterfazUsuarioTexto();
 		}
-		return instancia; 
+		return instancia;
+	}
+
+	private int opcionMenu(String preguntaOpcion, Map<Integer, ?> mapa, int... numValidos) {
+		
+		sc = new Scanner(System.in);
+		while (true) {
+			try {
+				
+				System.out.println(preguntaOpcion);
+
+				int opcion = sc.nextInt();
+				
+				if (ArrayIntContains(numValidos, opcion)
+						|| (mapa != null && mapa.containsKey(opcion))) {
+					sc.close();
+					return opcion;
+				}
+				System.out.println(opcion + " no es un número válido");
+
+			} catch (InputMismatchException e) {
+				System.out.println("Tiene que ser un número");
+				sc.nextLine(); //Limpiamos buffer del teclado
+			}
+
+		}
+	}
+	private boolean ArrayIntContains(int[] valores,int buscado) {
+		for(int v:valores) {
+			if (v==buscado) return true;
+		}
+		return false;
+	}
+
+	private int opcionMenu(String preguntaOpcion, int... numValidos) {
+		return opcionMenu(preguntaOpcion, null, numValidos);
+
 	}
 
 	public void menuPrincipal() {
@@ -36,17 +74,7 @@ public class InterfazUsuarioTexto {
 		System.out.println("[1] Product Backlog");
 		System.out.println("[2] Sprint Backlog");
 		System.out.println("[3] Gestión de Miembros ");
-
-		System.out.println("Escoja una opción: ");
-		sc = new Scanner(System.in);
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario < 1 || opcionUsuario > 3) {
-				System.out.println("Opción incorrecta. Escoja una opción: ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario < 1 || opcionUsuario > 3);
-		sc.close();
+		this.opcionUsuario = opcionMenu("Eliga una opción: ", 1, 2, 3);
 
 	}
 
@@ -57,19 +85,9 @@ public class InterfazUsuarioTexto {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo());
 		}
 
-		System.out.println("[-1] Añadir tarea");
 		System.out.println("[0] Atrás");
-
-		System.out.println("Escoja una opción: ");
-		sc = new Scanner(System.in);
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario != 0 && opcionUsuario != -1 && !productBacklog.getTareas().containsKey(opcionUsuario)) {
-				System.out.println("Opción incorrecta. Escoja una opción: ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario != 0 && opcionUsuario != -1 && !productBacklog.getTareas().containsKey(opcionUsuario));
-		sc.close();
+		System.out.println("[1] Añadir tarea");
+		this.opcionUsuario = opcionMenu("Elige una opción", productBacklog.getTareas(), 0, 1);
 	}
 
 	public void menuTarea(Tarea t) {
@@ -83,10 +101,10 @@ public class InterfazUsuarioTexto {
 
 		System.out.println("[1] Modificar tarea");
 		System.out.println("[0] Atrás");
-
+		this.opcionUsuario = opcionMenu("Elige una opción", 0, 1);
 	}
 
-	public void menuModificarTarea(Tarea t, Map<Integer,MiembroDeEquipo> miembros, Backlog backlog) {
+	public void menuModificarTarea(Tarea t, Map<Integer, MiembroDeEquipo> miembros, Backlog backlog) {
 		System.out.println("*******MODIFICAR TAREA " + t.getIdTarea() + "********\n");
 		System.out.println("Titulo: " + t.getTitulo());
 		System.out.println("Descripción: " + t.getDescripcion());
@@ -120,12 +138,13 @@ public class InterfazUsuarioTexto {
 			} while (!miembros.containsKey(nuevoMiembro));
 		}
 		sc.close();
-		
-		controladorKanban.modificarTarea(t.getIdTarea(),nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio, nuevoMiembro, backlog);
+
+		controladorKanban.modificarTarea(t.getIdTarea(), nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
+				nuevoMiembro, backlog);
 
 	}
-	
-	public void menuAnadirTarea(Map<Integer,MiembroDeEquipo> miembros){
+
+	public void menuAnadirTarea(Map<Integer, MiembroDeEquipo> miembros) {
 		sc = new Scanner(System.in);
 
 		System.out.println("Nuevo título: ");
@@ -152,177 +171,133 @@ public class InterfazUsuarioTexto {
 		System.out.println("Tipo de requisito asociado: ");
 		System.out.println("[1] Historia de Usuario");
 		System.out.println("[2] Defecto");
-		String opcion = sc.nextLine(); 
-		int intopcion = Integer.parseInt(opcion); 
-		String actor = ""; 
-		String tarea = ""; 
-		switch(intopcion){
-		case 1: 
+		
+		int intopcion = opcionMenu("Elige el tipo de requisito",1,2);
+		String actor = "";
+		String tarea = "";
+		switch (intopcion) {
+		case 1:
 			System.out.println("Actor: ");
-			actor = sc.nextLine(); 
-			break; 
-		case 2: 
+			actor = sc.nextLine();
+			break;
+		case 2:
 			System.out.println("Defecto asociado a la tarea: ");
-			tarea = sc.nextLine(); 
-			break; 
+			tarea = sc.nextLine();
+			break;
 		}
-		
-		sc.close();
-		
-		boolean anadida = controladorKanban.anadirTarea(nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio, nuevoMiembro, actor, tarea); 
-		if(!anadida){
+
+
+
+		boolean anadida = controladorKanban.anadirTarea(nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
+				nuevoMiembro, actor, tarea);
+		if (!anadida) {
 			System.out.println("La tarea no se ha podido añadir. Alguno de los campos era incorrecto. ");
 		}
-		
+
 	}
-	
+
 	public void menuSprintBacklog(SprintBacklog sprintBacklog) {
 		System.out.println("*******SPRINT BACKLOG********\n");
 		System.out.println(sprintBacklog.getDescripcion());
 		for (Map.Entry<Integer, Tarea> par : sprintBacklog.getTareas().entrySet()) {
-			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo()+ " Estado: "+par.getValue().getEstado());
+			System.out.println(
+					"[" + par.getKey() + "] " + par.getValue().getTitulo() + " Estado: " + par.getValue().getEstado());
 		}
 		System.out.println("");
 		System.out.println("[1] Añadir tarea al Sprint.");
-		System.out.println("[2] Mover tarea."); 
-		System.out.println("[3] Crear nuevo Sprint."); 
-		System.out.println("[0] Atrás."); 
-		
-		System.out.println("Escoja una opción o el ID de la tarea que quiere visualizar: ");
-		sc = new Scanner(System.in);
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario < 0 || opcionUsuario > 3) {
-				System.out.println("Opción incorrecta. Escoja una opción: ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario < 1 || opcionUsuario > 3);
-		sc.close();
+		System.out.println("[2] Mover tarea.");
+		System.out.println("[3] Crear nuevo Sprint.");
+		System.out.println("[0] Atrás.");
 
+
+		opcionUsuario=opcionMenu("Escoja una opción o el ID de la tarea que quiere visualizar: ", sprintBacklog.getTareas(),0,1,2,3);
 	}
-	
-	public void menuAnadirTareaSprint(ProductBacklog productBacklog){
+
+	public void menuAnadirTareaSprint(ProductBacklog productBacklog) {
 		System.out.println("*******AÑADIR TAREA A SPRINT********\n");
 		for (Map.Entry<Integer, Tarea> par : productBacklog.getTareas().entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo());
 		}
-		System.out.println("Escoja la tarea que se desea añadir o 0 para salir: ");
-		sc = new Scanner(System.in);
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario !=0 && !productBacklog.getTareas().containsKey(opcionUsuario)) {
-				System.out.println("Opción incorrecta. Escoja la tarea que se desea añadir o 0 para salir: ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario !=0 && !productBacklog.getTareas().containsKey(opcionUsuario));
-		sc.close();
-		
-		if(opcionUsuario!=0){
-			controladorKanban.anadirTareaSprint(opcionUsuario); 
+		opcionUsuario=opcionMenu("Escoja la tarea que se desea añadir o 0 para salir: ",productBacklog.getTareas(),0);
+
+		if (opcionUsuario != 0) {
+			controladorKanban.anadirTareaSprint(opcionUsuario);
 		}
 	}
-	
-	public void menuMoverTarea(SprintBacklog sprintBacklog){
+
+	public void menuMoverTarea(SprintBacklog sprintBacklog) {
 		System.out.println("*******MOVER TAREA********\n");
 		for (Map.Entry<Integer, Tarea> par : sprintBacklog.getTareas().entrySet()) {
-			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo()+ "Estado: "+par.getValue().getEstado());
+			System.out.println(
+					"[" + par.getKey() + "] " + par.getValue().getTitulo() + "Estado: " + par.getValue().getEstado());
 		}
-		
-		System.out.println("Escoja la tarea que se desea mover o 0 para salir: ");
-		sc = new Scanner(System.in);
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario !=0 && !sprintBacklog.getTareas().containsKey(opcionUsuario)) {
-				System.out.println("Opción incorrecta. Escoja la tarea que se desea mover o 0 para salir: ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario !=0 && !sprintBacklog.getTareas().containsKey(opcionUsuario));
-		sc.close();
-		
-		if(opcionUsuario!=0){
-			
-			controladorKanban.moverTarea(opcionUsuario); 
+
+
+		opcionUsuario=opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ",sprintBacklog.getTareas(), 0);
+
+		if (opcionUsuario != 0) {
+
+			controladorKanban.moverTarea(opcionUsuario);
 
 		}
-		
+
 	}
-	
-	public void menuCrearNuevoSprint(){
+
+	public void menuCrearNuevoSprint() {
 		System.out.println("*******CREAR NUEVO SPRINT********\n");
 		sc = new Scanner(System.in);
 		System.out.println("Día del mes: ");
-		int dia = sc.nextInt(); 
+		int dia = sc.nextInt();
 		System.out.println("Mes: ");
 		int mes = sc.nextInt();
 		System.out.println("Año: ");
-		int ano = sc.nextInt(); 
-		System.out.println("Descripcion: "); 
-		String descripcion = sc.nextLine(); 
-		
+		int ano = sc.nextInt();
+		System.out.println("Descripcion: ");
+		String descripcion = sc.nextLine();
+
 		System.out.print("¿Desea crear el nuevo sprint? (no se tendrá acceso al sprint anterior)");
-		System.out.println("[1] Crear nuevo Sprint."); 
-		System.out.println("[0] Cancelar."); 
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario !=0 && opcionUsuario!=1) {
-				System.out.println("Opción incorrecta. ¿Desea crear el nuevo sprint? (no se tendrá acceso al sprint anterior) ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario !=0 && opcionUsuario!=1);
-		sc.close();
+		System.out.println("[1] Crear nuevo Sprint.");
+		System.out.println("[0] Cancelar.");
 		
-		if(opcionUsuario==1){
-			controladorKanban.anadirNuevoSprint(dia, mes, ano, descripcion); 
+		opcionUsuario=opcionMenu("Elige una opcion: ",0,1);
+
+		if (opcionUsuario == 1) {
+			controladorKanban.anadirNuevoSprint(dia, mes, ano, descripcion);
 		}
-		
+
 	}
-	
-	public void menuMiembros(Map<Integer,MiembroDeEquipo> miembros) {
+
+	public void menuMiembros(Map<Integer, MiembroDeEquipo> miembros) {
 		System.out.println("*******MIEMBROS DE EQUIPO********\n");
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
-		System.out.println("[1] Añadir Miembro."); 
-		System.out.println("[0] Atrás."); 
+		System.out.println("[1] Añadir Miembro.");
+		System.out.println("[0] Atrás.");
+
+
+		opcionUsuario=opcionMenu("Escoja una opcion: ", 0,1);
 		
-		System.out.println("Escoja una opción: ");
-		sc = new Scanner(System.in);
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario !=0 && opcionUsuario!=1) {
-				System.out.println("Opción incorrecta. Escoja una opción:  ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario !=0 && opcionUsuario!=1);
-		sc.close();
-		
+
 	}
-	
-	public void menuAnadirMiembro(){
+
+	public void menuAnadirMiembro() {
 		System.out.println("*******CREAR NUEVO MIEMBRO*******\n");
 		sc = new Scanner(System.in);
 		System.out.println("Nombre: ");
-		String nombre = sc.nextLine(); 
-		
-		System.out.print("¿Desea crear un miembro con el nobmre "+nombre+"?");
-		System.out.println("[1] Crear miembro."); 
-		System.out.println("[0] Cancelar."); 
-		
-		System.out.println("Escoja una opción: ");
-		sc = new Scanner(System.in);
-		opcionUsuario = sc.nextInt();
-		do {
-			if (opcionUsuario !=0 && opcionUsuario!=1) {
-				System.out.println("Opción incorrecta. Escoja una opción:  ");
-				opcionUsuario = sc.nextInt();
-			}
-		} while (opcionUsuario !=0 && opcionUsuario!=1);
-		sc.close();
-		
-		if(opcionUsuario == 1){
-			controladorKanban.anadirNuevoMiembro(nombre); 
+		String nombre = sc.nextLine();
+
+		System.out.print("¿Desea crear un miembro con el nobmre " + nombre + "?");
+		System.out.println("[1] Crear miembro.");
+		System.out.println("[0] Cancelar.");
+
+
+		opcionUsuario=opcionMenu("Escoja una opción: ", 0,1);
+
+		if (opcionUsuario == 1) {
+			controladorKanban.anadirNuevoMiembro(nombre);
 		}
-		
+
 	}
 
 	public void setControladorKanban(Controlador controlador) {
