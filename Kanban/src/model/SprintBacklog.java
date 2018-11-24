@@ -37,4 +37,5 @@ public class SprintBacklog extends Backlog {
 	public Calendar getFechaInicio() {
 		return fechaInicio;
 	}
+
 }

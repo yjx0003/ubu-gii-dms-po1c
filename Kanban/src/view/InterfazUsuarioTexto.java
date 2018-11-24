@@ -32,6 +32,10 @@ public class InterfazUsuarioTexto {
 		}
 		return instancia;
 	}
+	
+	public int getOpcionUsuario(){
+		return this.opcionUsuario; 
+	}
 
 	private int opcionMenu(String preguntaOpcion, Map<Integer, ?> mapa, int... numValidos) {
 		

@@ -18,6 +18,8 @@ public class Controlador {
 	private PersistenciaAbstracta modeloKanban;
 	private InterfazUsuarioTexto vistaKanban;
 	
+	private EstadoControlador estado = EstadoControladorPrincipal.getInstancia(); 
+	
 	private static Controlador instancia = null; 
 
 	private Controlador() {
@@ -31,6 +33,29 @@ public class Controlador {
 		return instancia; 
 	}
 	
+	public void cambiarEstado(EstadoControlador e){
+		this.estado =e; 
+	}
+	
+	public void init(){
+		while(true){
+			estado.mostrarMenu(this);
+			estado.actualizarEstado(this);
+		}
+	}
+	
+	public PersistenciaAbstracta getModeloKanban() {
+		return modeloKanban;
+	}
+
+	public InterfazUsuarioTexto getVistaKanban() {
+		return vistaKanban;
+	}
+
+	public EstadoControlador getEstado() {
+		return estado;
+	}
+
 	public void setModeloKanban(PersistenciaAbstracta modelo){
 		this.modeloKanban = modelo; 
 	}
