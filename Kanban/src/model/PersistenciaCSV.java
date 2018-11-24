@@ -214,7 +214,8 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 		commitSprintBacklog();
 	}
 
-	private void commitMiembrosDeEquipo() {
+	@Override
+	public void commitMiembrosDeEquipo() {
 		try {
 			
 			CSVWriter writer = new CSVWriter(new FileWriter(this.fileMiembroDeEquipo), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
@@ -240,7 +241,8 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 		}
 	}
 	
-	private void commitProductBacklog() {
+	@Override
+	public void commitProductBacklog() {
 		try {
 			
 			CSVWriter writer = new CSVWriter(new FileWriter(this.fileProductBacklog), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
@@ -281,7 +283,9 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 			e.printStackTrace();
 		}
 	}
-	private void commitSprintBacklog() {
+	
+	@Override
+	public void commitSprintBacklog() {
 		try {
 			CSVWriter writer = new CSVWriter(new FileWriter(this.fileSprintBacklog), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
 					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);

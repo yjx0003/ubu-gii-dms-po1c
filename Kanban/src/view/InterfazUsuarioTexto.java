@@ -92,7 +92,7 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, Tarea> par : productBacklog.getTareas().entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo());
 		}
-
+		System.out.println("");
 		System.out.println("[0] Atrás");
 		System.out.println("[1] Añadir tarea");
 		this.opcionUsuario = opcionMenu("Elige una opción", productBacklog.getTareas(), 0, 1);
@@ -107,6 +107,7 @@ public class InterfazUsuarioTexto {
 		System.out.println("Asignada a: " + t.getMiembro());
 		System.out.println(t.getRequisito());
 
+		System.out.println("");
 		System.out.println("[1] Modificar tarea");
 		System.out.println("[0] Atrás");
 		this.opcionUsuario = opcionMenu("Elige una opción", 0, 1);
@@ -122,7 +123,7 @@ public class InterfazUsuarioTexto {
 		System.out.println(t.getRequisito());
 
 		
-		System.out.println("**Se deben dejar los campos vacíos si no se quieren modificar. **");
+		System.out.println("\n**Se deben dejar los campos vacíos si no se quieren modificar. **\n");
 
 		System.out.println("Nuevo título: ");
 		String nuevoTitulo = sc.nextLine();
@@ -135,6 +136,7 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
+		System.out.println("");
 		System.out.println("[0] Mantener miembro");
 		int nuevoMiembro=opcionMenu("Nuevo miembro", miembros,0);
 		
@@ -175,9 +177,7 @@ public class InterfazUsuarioTexto {
 			tarea = sc.nextLine();
 			break;
 		}
-
-
-
+		
 		boolean anadida = controladorKanban.anadirTarea(nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
 				nuevoMiembro, actor, tarea);
 		if (!anadida) {
@@ -208,6 +208,9 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, Tarea> par : productBacklog.getTareas().entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo());
 		}
+		
+		System.out.println("");
+		System.out.println("[0] Atrás.");
 		opcionUsuario=opcionMenu("Escoja la tarea que se desea añadir o 0 para salir: ",productBacklog.getTareas(),0);
 
 		if (opcionUsuario != 0) {
@@ -222,7 +225,8 @@ public class InterfazUsuarioTexto {
 					"[" + par.getKey() + "] " + par.getValue().getTitulo() + "Estado: " + par.getValue().getEstado());
 		}
 
-
+		System.out.println("");
+		System.out.println("[0] Atrás.");
 		opcionUsuario=opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ",sprintBacklog.getTareas(), 0);
 
 		if (opcionUsuario != 0) {
@@ -242,10 +246,11 @@ public class InterfazUsuarioTexto {
 		int mes = sc.nextInt();
 		System.out.println("Año: ");
 		int ano = sc.nextInt();
+		sc.nextLine(); 
 		System.out.println("Descripcion: ");
-		String descripcion = sc.nextLine();
+		String descripcion = sc.nextLine(); 
 
-		System.out.print("¿Desea crear el nuevo sprint? (no se tendrá acceso al sprint anterior)");
+		System.out.println("¿Desea crear el nuevo sprint? (no se tendrá acceso al sprint anterior)");
 		System.out.println("[1] Crear nuevo Sprint.");
 		System.out.println("[0] Cancelar.");
 		
@@ -260,8 +265,9 @@ public class InterfazUsuarioTexto {
 	public void menuMiembros(Map<Integer, MiembroDeEquipo> miembros) {
 		System.out.println("*******MIEMBROS DE EQUIPO********\n");
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
-			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
+			System.out.println("-" + par.getValue().getNombre());
 		}
+		System.out.println("");
 		System.out.println("[1] Añadir Miembro.");
 		System.out.println("[0] Atrás.");
 

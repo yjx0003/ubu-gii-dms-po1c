@@ -19,7 +19,10 @@ public abstract class PersistenciaAbstracta {
 	
 	public abstract void leerPersistencia(); 
 	
-	public abstract void commit(); 
+	public abstract void commit();
+	public abstract void commitMiembrosDeEquipo(); 
+	public abstract void commitProductBacklog(); 
+	public abstract void commitSprintBacklog(); 
 	
 	public Map<Integer,MiembroDeEquipo> getMiembros(){
 		return this.miembros; 

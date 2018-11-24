@@ -29,6 +29,9 @@ public class EstadoControladorSprintBacklog extends EstadoControlador{
 		if(opcionUsuario == 1){
 			c.cambiarEstado(EstadoControladorAnadirTareaSprint.getInstancia());
 		}
+		if(opcionUsuario ==2){
+			c.cambiarEstado(EstadoControladorMoverTarea.getInstancia());
+		}
 		if(opcionUsuario == 3){
 			c.cambiarEstado(EstadoControladorCrearNuevoSprint.getInstancia());
 		}
