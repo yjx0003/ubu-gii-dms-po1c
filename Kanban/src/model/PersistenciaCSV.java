@@ -15,6 +15,9 @@ import com.opencsv.CSVWriter;
 public class PersistenciaCSV extends PersistenciaAbstracta {
 
 	private static PersistenciaCSV instancia = null;
+	private final String fileMiembroDeEquipo= "csv/MiembroDeEquipo.csv";
+	private final String fileProductBacklog="csv/ProductBacklog.csv";
+	private final String fileSprintBacklog="csv/SprintBacklog.csv";
 
 	private PersistenciaCSV() {
 		miembros = new HashMap<Integer, MiembroDeEquipo>();
@@ -36,10 +39,10 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 	private void leerMiembros() {
 		try {
-			String archCSV = "csv/MiembroDeEquipo.csv";
+			
 			CSVReader csvReader;
 
-			csvReader = new CSVReader(new FileReader(archCSV));
+			csvReader = new CSVReader(new FileReader(this.fileMiembroDeEquipo));
 
 			String[] fila = null;
 
@@ -73,10 +76,10 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 			productBacklog = ProductBacklog.getInstancia();
 
-			String archCSV = "csv/ProductBacklog.csv";
+			
 			CSVReader csvReader;
 
-			csvReader = new CSVReader(new FileReader(archCSV));
+			csvReader = new CSVReader(new FileReader(this.fileProductBacklog));
 
 			String[] fila = null;
 
@@ -131,10 +134,10 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 			sprintBacklog = SprintBacklog.getInstancia();
 
-			String archCSV = "csv/SprintBacklog.csv";
+			
 			CSVReader csvReader;
 
-			csvReader = new CSVReader(new FileReader(archCSV));
+			csvReader = new CSVReader(new FileReader(this.fileSprintBacklog));
 
 			String[] fila = null;
 
@@ -213,8 +216,8 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 
 	public void commitMiembrosDeEquipo() {
 		try {
-			String archCSV = "csv/MiembrosDeEquipo.csv";
-			CSVWriter writer = new CSVWriter(new FileWriter(archCSV), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
+			
+			CSVWriter writer = new CSVWriter(new FileWriter(this.fileMiembroDeEquipo), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
 					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 			
 			String[] header = { "#ID", "#nombre" };
@@ -239,8 +242,8 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 	
 	public void commitProductBacklog() {
 		try {
-			String archCSV = "csv/ProductBacklog2.csv";
-			CSVWriter writer = new CSVWriter(new FileWriter(archCSV), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
+			
+			CSVWriter writer = new CSVWriter(new FileWriter(this.fileProductBacklog), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
 					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 			
 			String[] header = { "#ID","#Coste","#Beneficio","#Titulo","#Descripcion","#Miembro asignado","#Tipo","#Actor/Tarea Anterior" };
@@ -280,8 +283,7 @@ public class PersistenciaCSV extends PersistenciaAbstracta {
 	}
 	public void commitSprintBacklog() {
 		try {
-			String archCSV = "csv/SprintBacklog2.csv";
-			CSVWriter writer = new CSVWriter(new FileWriter(archCSV), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
+			CSVWriter writer = new CSVWriter(new FileWriter(this.fileSprintBacklog), CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER,
 					CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 			
 			String[] header = { "#ID","#Coste","#Beneficio","#Titulo","#Descripcion","#Miembro asignado","#Estado","#Tipo","#Actor/Tarea Anterior" };
