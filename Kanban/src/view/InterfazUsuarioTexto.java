@@ -153,15 +153,19 @@ public class InterfazUsuarioTexto {
 				OpcionesMenu.DEFECTO);
 		String actor = "";
 		String tarea = "";
-		switch (intopcion) {
-		case 0:
+
+		switch (OpcionesMenu.values()[intopcion]) {
+		case HISTORIA_DE_USUARIO:
 			System.out.println("Actor: ");
 			actor = sc.nextLine();
 			break;
-		case 1:
+		case DEFECTO:
 			System.out.println("Defecto asociado a la tarea: ");
 			tarea = sc.nextLine();
 			break;
+		default:
+			System.err.println("Error");
+
 		}
 
 		boolean anadida = controladorKanban.anadirTarea(nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
@@ -180,7 +184,6 @@ public class InterfazUsuarioTexto {
 					"[" + par.getKey() + "] " + par.getValue().getTitulo() + " Estado: " + par.getValue().getEstado());
 		}
 
-
 		opcionUsuario = opcionMenu("Escoja una opción o el ID de la tarea que quiere visualizar: ",
 				sprintBacklog.getTareas(), OpcionesMenu.ANADIR_TAREA_AL_SPRINT, OpcionesMenu.MOVER_TAREA,
 				OpcionesMenu.CREAR_NUEVO_SPRINT, OpcionesMenu.ATRAS);
@@ -192,12 +195,10 @@ public class InterfazUsuarioTexto {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo());
 		}
 
-
-
 		opcionUsuario = opcionMenu("Escoja la tarea que se desea añadir o 0 para salir: ", productBacklog.getTareas(),
 				OpcionesMenu.ATRAS);
 
-		if (opcionUsuario != 0) {
+		if (opcionUsuario != OpcionesMenu.ATRAS.ordinal()) {
 			controladorKanban.anadirTareaSprint(opcionUsuario);
 		}
 	}
@@ -209,9 +210,10 @@ public class InterfazUsuarioTexto {
 					"[" + par.getKey() + "] " + par.getValue().getTitulo() + "Estado: " + par.getValue().getEstado());
 		}
 
-		opcionUsuario = opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ", sprintBacklog.getTareas(), OpcionesMenu.ATRAS);
+		opcionUsuario = opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ", sprintBacklog.getTareas(),
+				OpcionesMenu.ATRAS);
 
-		if (opcionUsuario != 0) {
+		if (opcionUsuario != OpcionesMenu.ATRAS.ordinal()) {
 
 			controladorKanban.moverTarea(opcionUsuario);
 
@@ -234,10 +236,9 @@ public class InterfazUsuarioTexto {
 
 		System.out.println("¿Desea crear el nuevo sprint? (no se tendrá acceso al sprint anterior)");
 
-
 		opcionUsuario = opcionMenu("Elige una opcion: ", OpcionesMenu.ACEPTAR, OpcionesMenu.CANCELAR);
 
-		if (opcionUsuario == 0) {
+		if (opcionUsuario == OpcionesMenu.ACEPTAR.ordinal()) {
 			controladorKanban.anadirNuevoSprint(dia, mes, ano, descripcion);
 		}
 
@@ -262,10 +263,9 @@ public class InterfazUsuarioTexto {
 
 		opcionUsuario = opcionMenu("Escoja una opción: ", OpcionesMenu.ACEPTAR, OpcionesMenu.CANCELAR);
 
-		if (opcionUsuario == 0) {
+		if (opcionUsuario == OpcionesMenu.ACEPTAR.ordinal()) {
 			controladorKanban.anadirNuevoMiembro(nombre);
 		}
-
 	}
 
 	public void init(Controlador controlador) {
