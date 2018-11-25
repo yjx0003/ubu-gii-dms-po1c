@@ -19,7 +19,7 @@ public class FactoryEstadoControlador {
 		estados.put(OpcionesMenu.CREAR_NUEVO_SPRINT, EstadoControladorCrearNuevoSprint.getInstancia());
 		estados.put(OpcionesMenu.GESTION_MIEBROS, EstadoControladorMiembros.getInstancia());
 		estados.put(OpcionesMenu.MODIFICAR_TAREA,EstadoControladorModificarTarea.getInstancia());
-		estados.put(OpcionesMenu.MOVER_TAREA, EstadoControladorModificarTarea.getInstancia());
+		estados.put(OpcionesMenu.MOVER_TAREA, EstadoControladorMoverTarea.getInstancia());
 		estados.put(OpcionesMenu.ATRAS, EstadoControladorPrincipal.getInstancia());
 		estados.put(OpcionesMenu.PRODUCT_BACKLOG, EstadoControladorProductBacklog.getInstancia());
 		estados.put(OpcionesMenu.SPRINT_BACKLOG,EstadoControladorSprintBacklog.getInstancia());
