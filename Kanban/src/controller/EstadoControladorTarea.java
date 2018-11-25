@@ -1,12 +1,10 @@
 package controller;
 
-
-
 import model.Tarea;
 
 public class EstadoControladorTarea extends EstadoControlador{
 	
-
+	private Tarea tarea;
 	private static EstadoControladorTarea instancia = null; 
 	
 	private EstadoControladorTarea(){
@@ -23,21 +21,29 @@ public class EstadoControladorTarea extends EstadoControlador{
 	@Override
 	public void actualizarEstado(Controlador c) {
 		int opcionUsuario = c.getVistaKanban().getOpcionUsuario(); 
-		c.cambiarEstado(factoryEstadoControlador.getEstado(opcionUsuario));
+		
+		EstadoControlador e=factoryEstadoControlador.getEstado(opcionUsuario);
+		if (!(e instanceof EstadoControladorModificarTarea)) {
+			c.cambiarEstado(e);
+		}else {
+			EstadoControladorModificarTarea estado=(EstadoControladorModificarTarea) e;
+			estado.setTarea(tarea);
+			c.cambiarEstado(estado);
+		}
+		
 
 	}
+	
 
+
+	public void setTarea(Tarea tarea) {
+		this.tarea = tarea;
+	}
 
 	@Override
 	public void mostrarMenu(Controlador c) {
-		int opcionUsuario=c.getVistaKanban().getOpcionUsuario();
-		Tarea t=c.getModeloKanban().getProductBacklog().getTareas().get(opcionUsuario);
-		if (t==null) {
-			c.getModeloKanban().getSprintBacklog().getTareas().get(opcionUsuario);
-			
-		}
-		c.getVistaKanban().menuTarea(t);
 		
+		c.getVistaKanban().menuTarea(this.tarea);
 	}
 	
 	

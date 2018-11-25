@@ -1,21 +1,20 @@
 package controller;
 
+import model.Tarea;
 
+public class EstadoControladorProductBacklog extends EstadoControlador {
 
+	private static EstadoControladorProductBacklog instancia = null;
 
-public class EstadoControladorProductBacklog extends EstadoControlador{
-	
-	private static EstadoControladorProductBacklog instancia = null; 
-	
-	private EstadoControladorProductBacklog(){
-		
+	private EstadoControladorProductBacklog() {
+
 	}
-	
-	public static EstadoControladorProductBacklog getInstancia(){
-		if(instancia == null){
-			instancia = new EstadoControladorProductBacklog(); 
+
+	public static EstadoControladorProductBacklog getInstancia() {
+		if (instancia == null) {
+			instancia = new EstadoControladorProductBacklog();
 		}
-		return instancia; 
+		return instancia;
 	}
 
 	@Override
@@ -25,7 +24,10 @@ public class EstadoControladorProductBacklog extends EstadoControlador{
 		if (opcionUsuario<OpcionesMenu.values().length) {
 			c.cambiarEstado(factoryEstadoControlador.getEstado(opcionUsuario));
 		}else {
-			c.cambiarEstado(factoryEstadoControlador.getEstado(OpcionesMenu.TAREA));
+			EstadoControladorTarea estado= (EstadoControladorTarea)factoryEstadoControlador.getEstado(OpcionesMenu.TAREA);
+			Tarea t=c.getModeloKanban().getProductBacklog().getTareas().get(opcionUsuario);
+			estado.setTarea(t);
+			c.cambiarEstado(estado);
 		
 			
 		}
@@ -34,7 +36,7 @@ public class EstadoControladorProductBacklog extends EstadoControlador{
 	@Override
 	public void mostrarMenu(Controlador c) {
 		c.getVistaKanban().menuProductBacklog(c.getModeloKanban().getProductBacklog());
-		
+
 	}
 
 }

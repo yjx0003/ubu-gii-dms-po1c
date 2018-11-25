@@ -4,7 +4,7 @@ import model.Tarea;
 
 public class EstadoControladorModificarTarea extends EstadoControlador {
 	
-
+	private Tarea tarea; 
 	
 	private static EstadoControladorModificarTarea instancia = null; 
 	
@@ -25,17 +25,14 @@ public class EstadoControladorModificarTarea extends EstadoControlador {
 		
 	}
 
-
+	public void setTarea(Tarea tarea) {
+		this.tarea = tarea;
+		
+	}
 
 	@Override
 	public void mostrarMenu(Controlador c) {
-		int opcionUsuario=c.getVistaKanban().getOpcionUsuario();
-		Tarea t=c.getModeloKanban().getProductBacklog().getTareas().get(opcionUsuario);
-		if (t==null) {
-			c.getModeloKanban().getSprintBacklog().getTareas().get(opcionUsuario);
-			
-		}
-		c.getVistaKanban().menuModificarTarea(t, c.getModeloKanban().getMiembros(), c.getModeloKanban().getProductBacklog());
+		c.getVistaKanban().menuModificarTarea(this.tarea, c.getModeloKanban().getMiembros(), c.getModeloKanban().getProductBacklog());
 		
 	}
 

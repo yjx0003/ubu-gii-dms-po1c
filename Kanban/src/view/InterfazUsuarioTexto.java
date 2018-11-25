@@ -127,7 +127,9 @@ public class InterfazUsuarioTexto {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
 		int nuevoMiembro = opcionMenu("Nuevo miembro", miembros, OpcionesMenu.MANTENER_MIEMBRO);
-
+		if (nuevoMiembro==OpcionesMenu.MANTENER_MIEMBRO.ordinal()) {
+			nuevoMiembro=0;
+		}
 		controladorKanban.modificarTarea(t.getIdTarea(), nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
 				nuevoMiembro, backlog);
 

@@ -1,5 +1,6 @@
 package controller;
 
+import model.Tarea;
 
 public class EstadoControladorSprintBacklog extends EstadoControlador{
 
@@ -25,7 +26,10 @@ public class EstadoControladorSprintBacklog extends EstadoControlador{
 		if (opcionUsuario<OpcionesMenu.values().length) {
 			c.cambiarEstado(factoryEstadoControlador.getEstado(opcionUsuario));
 		}else {
-			c.cambiarEstado(factoryEstadoControlador.getEstado(OpcionesMenu.TAREA));
+			EstadoControladorTarea estado= (EstadoControladorTarea)factoryEstadoControlador.getEstado(OpcionesMenu.TAREA);
+			Tarea t=c.getModeloKanban().getSprintBacklog().getTareas().get(opcionUsuario);
+			estado.setTarea(t);
+			c.cambiarEstado(estado);
 		
 		}
 		
