@@ -6,6 +6,7 @@ import java.util.Map;
 import model.Backlog;
 import model.Defecto;
 import model.EstadoTareaCompletada;
+import model.EstadoTareaEnValidacion;
 import model.HistoriaDeUsuario;
 import model.MiembroDeEquipo;
 import model.PersistenciaAbstracta;
@@ -121,6 +122,9 @@ public class Controlador {
 	}
 
 	public void moverTarea(int idTarea) {
+		if(this.modeloKanban.getSprintBacklog().getTareas().get(idTarea).getEstado() instanceof EstadoTareaEnValidacion){
+			EstadoTareaEnValidacion.getInstancia().setSiguienteEstado(this.getVistaKanban().pedirSiguienteEstado());
+		}
 		modeloKanban.getSprintBacklog().getTareas().get(idTarea).actualizarEstado();
 		modeloKanban.commitSprintBacklog();
 	}

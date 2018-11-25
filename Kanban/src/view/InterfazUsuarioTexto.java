@@ -6,6 +6,9 @@ import java.util.Scanner;
 import controller.Controlador;
 import controller.OpcionesMenu;
 import model.Backlog;
+import model.EstadoTarea;
+import model.EstadoTareaCompletada;
+import model.EstadoTareaEnProceso;
 import model.MiembroDeEquipo;
 import model.ProductBacklog;
 import model.SprintBacklog;
@@ -273,6 +276,17 @@ public class InterfazUsuarioTexto {
 	public void init(Controlador controlador) {
 		this.sc = new Scanner(System.in);
 		this.controladorKanban = controlador;
+	}
+
+	public EstadoTarea pedirSiguienteEstado() {
+		System.out.println("¿Es necesario que la tarea vuelva al estado \"En Proceso\"?");
+		int respuesta = opcionMenu("Escoja una opción: ", OpcionesMenu.SI, OpcionesMenu.NO); 
+		if(respuesta == OpcionesMenu.SI.ordinal()){
+			return EstadoTareaEnProceso.getInstancia(); 
+		}else{
+			return EstadoTareaCompletada.getInstancia(); 
+		}
+		
 	}
 
 }

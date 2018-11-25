@@ -18,7 +18,9 @@ public enum OpcionesMenu {
 	MOVER_TAREA("Mover tarea"),
 	CREAR_NUEVO_SPRINT("Crear nuevo Sprint"),
 	ANADIR_MIEMBRO("Añadir Miembro"),
-	TAREA("TAREA");
+	TAREA("TAREA"), 
+	SI("Si"), 
+	NO("No"); 
 
 	
 	private String nombre;

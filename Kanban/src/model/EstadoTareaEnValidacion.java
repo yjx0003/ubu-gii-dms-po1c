@@ -2,7 +2,9 @@ package model;
 
 public class EstadoTareaEnValidacion extends EstadoTarea {
 	
-	private static EstadoTareaEnValidacion instancia = null; 
+	private static EstadoTareaEnValidacion instancia = null;
+	
+	private EstadoTarea siguienteEstado = EstadoTareaCompletada.getInstancia(); 
 	
 	
 	private EstadoTareaEnValidacion() {
@@ -19,7 +21,11 @@ public class EstadoTareaEnValidacion extends EstadoTarea {
 
 	@Override
 	public void actualizarEstado(Tarea t){
-		t.cambiarEstado(EstadoTareaCompletada.getInstancia());
+		t.cambiarEstado(siguienteEstado);
+	}
+	
+	public void setSiguienteEstado(EstadoTarea siguienteEstado){
+		this.siguienteEstado = siguienteEstado; 
 	}
 
 }
