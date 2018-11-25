@@ -18,7 +18,8 @@ public class EstadoControladorAnadirTarea extends EstadoControlador{
 
 	@Override
 	public void actualizarEstado(Controlador c) {
-		c.cambiarEstado(EstadoControladorProductBacklog.getInstancia());
+		
+		c.cambiarEstado(factoryEstadoControlador.getEstado(OpcionesMenu.PRODUCT_BACKLOG));
 	}
 
 	@Override

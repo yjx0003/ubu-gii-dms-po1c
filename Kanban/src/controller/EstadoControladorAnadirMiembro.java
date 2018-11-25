@@ -17,7 +17,7 @@ public class EstadoControladorAnadirMiembro extends EstadoControlador{
 
 	@Override
 	public void actualizarEstado(Controlador c) {
-		c.cambiarEstado(EstadoControladorMiembros.getInstancia());
+		c.cambiarEstado(factoryEstadoControlador.getEstado(OpcionesMenu.GESTION_MIEBROS));
 	}
 
 	@Override

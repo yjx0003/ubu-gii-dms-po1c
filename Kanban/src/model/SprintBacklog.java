@@ -3,7 +3,7 @@ package model;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Map; 
+
 
 public class SprintBacklog extends Backlog {
 	private String descripcion; 

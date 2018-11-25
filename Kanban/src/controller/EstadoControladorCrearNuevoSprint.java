@@ -17,7 +17,7 @@ public class EstadoControladorCrearNuevoSprint extends EstadoControlador{
 
 	@Override
 	public void actualizarEstado(Controlador c) {
-		c.cambiarEstado(EstadoControladorSprintBacklog.getInstancia());
+		c.cambiarEstado(factoryEstadoControlador.getEstado(OpcionesMenu.SPRINT_BACKLOG));
 	}
 
 	@Override

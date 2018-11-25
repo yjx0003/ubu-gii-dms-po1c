@@ -18,13 +18,7 @@ public class EstadoControladorMiembros extends EstadoControlador{
 	@Override
 	public void actualizarEstado(Controlador c) {
 		int opcionUsuario = c.getVistaKanban().getOpcionUsuario(); 
-		switch(opcionUsuario){
-		case 0: 
-			c.cambiarEstado(EstadoControladorPrincipal.getInstancia());break; 
-		case 1: 
-			c.cambiarEstado(EstadoControladorAnadirMiembro.getInstancia());break; 
-		}
-		
+		c.cambiarEstado(factoryEstadoControlador.getEstado(opcionUsuario));
 	}
 
 	@Override

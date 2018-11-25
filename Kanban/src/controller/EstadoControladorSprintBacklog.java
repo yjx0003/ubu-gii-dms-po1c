@@ -1,8 +1,5 @@
 package controller;
 
-import java.util.Map;
-
-import model.Tarea;
 
 public class EstadoControladorSprintBacklog extends EstadoControlador{
 
@@ -23,26 +20,14 @@ public class EstadoControladorSprintBacklog extends EstadoControlador{
 	@Override
 	public void actualizarEstado(Controlador c) {
 		int opcionUsuario = c.getVistaKanban().getOpcionUsuario(); 
-		if(opcionUsuario == 0){
-			c.cambiarEstado(EstadoControladorPrincipal.getInstancia());
-		}
-		if(opcionUsuario == 1){
-			c.cambiarEstado(EstadoControladorAnadirTareaSprint.getInstancia());
-		}
-		if(opcionUsuario ==2){
-			c.cambiarEstado(EstadoControladorMoverTarea.getInstancia());
-		}
-		if(opcionUsuario == 3){
-			c.cambiarEstado(EstadoControladorCrearNuevoSprint.getInstancia());
-		}
-		for (Map.Entry<Integer, Tarea> par : c.getModeloKanban().getSprintBacklog().getTareas().entrySet()) {
-			if(opcionUsuario == par.getKey()){
-				EstadoControladorTarea estado = EstadoControladorTarea.getInstancia(); 
-				estado.setTarea(par.getValue()); 
-				c.cambiarEstado(estado);
-			}
-		}
+
 		
+		if (opcionUsuario<OpcionesMenu.values().length) {
+			c.cambiarEstado(factoryEstadoControlador.getEstado(opcionUsuario));
+		}else {
+			c.cambiarEstado(factoryEstadoControlador.getEstado(OpcionesMenu.TAREA));
+		
+		}
 		
 	}
 

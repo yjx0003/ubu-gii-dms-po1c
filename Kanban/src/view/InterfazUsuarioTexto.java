@@ -1,11 +1,10 @@
 package view;
 
-
 import java.util.Map;
 import java.util.Scanner;
 
-
 import controller.Controlador;
+import controller.OpcionesMenu;
 import model.Backlog;
 import model.MiembroDeEquipo;
 import model.ProductBacklog;
@@ -32,57 +31,53 @@ public class InterfazUsuarioTexto {
 		}
 		return instancia;
 	}
-	
-	public int getOpcionUsuario(){
-		return this.opcionUsuario; 
+
+	public int getOpcionUsuario() {
+		return this.opcionUsuario;
 	}
 
-	private int opcionMenu(String preguntaOpcion, Map<Integer, ?> mapa, int... numValidos) {
-		
-	
+	private int opcionMenu(String preguntaOpcion, Map<Integer, ?> mapa, OpcionesMenu... opcionesValidos) {
+		System.out.println("");
+		for (int i = 0; i < opcionesValidos.length; i++) {
+			System.out.println("[" + i + "] " + opcionesValidos[i].getNombre());
+		}
+
 		while (true) {
 			try {
-				
+
 				System.out.println(preguntaOpcion);
 
-				int opcion =Integer.valueOf(sc.nextLine());
-				
-				
-				if (ArrayIntContains(numValidos, opcion)
-						|| (mapa != null && mapa.containsKey(opcion))) {
+				int opcion = Integer.valueOf(sc.nextLine());
+
+				if (opcion >= 0 && opcion < opcionesValidos.length) {
+					return opcionesValidos[opcion].ordinal();
+				} else if (mapa != null && mapa.containsKey(opcion)) {
 					return opcion;
 				}
 				System.out.println(opcion + " no es un número válido");
 
 			} catch (NumberFormatException e) {
 				System.out.println("Tiene que ser un número");
-				
+
 			}
 
 		}
 	}
+
 	public void cerrarRecursos() {
 		sc.close();
 	}
-	private boolean ArrayIntContains(int[] valores,int buscado) {
-		for(int v:valores) {
-			if (v==buscado) return true;
-		}
-		return false;
-	}
 
-	private int opcionMenu(String preguntaOpcion, int... numValidos) {
-		return opcionMenu(preguntaOpcion, null, numValidos);
+	private int opcionMenu(String preguntaOpcion, OpcionesMenu... opcionesValidos) {
+		return opcionMenu(preguntaOpcion, null, opcionesValidos);
 
 	}
 
 	public void menuPrincipal() {
 		System.out.println("********MENÚ SCRUM********\n");
-		System.out.println("[1] Product Backlog");
-		System.out.println("[2] Sprint Backlog");
-		System.out.println("[3] Gestión de Miembros ");
-		System.out.println("[4] Guardar y cerrar");
-		this.opcionUsuario = opcionMenu("Eliga una opción: ", 1, 2, 3,4);
+
+		this.opcionUsuario = opcionMenu("Eliga una opción: ", OpcionesMenu.PRODUCT_BACKLOG, OpcionesMenu.SPRINT_BACKLOG,
+				OpcionesMenu.GESTION_MIEBROS, OpcionesMenu.GUARDAR_Y_CERRAR);
 
 	}
 
@@ -92,10 +87,9 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, Tarea> par : productBacklog.getTareas().entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo());
 		}
-		System.out.println("");
-		System.out.println("[0] Atrás");
-		System.out.println("[1] Añadir tarea");
-		this.opcionUsuario = opcionMenu("Elige una opción", productBacklog.getTareas(), 0, 1);
+
+		this.opcionUsuario = opcionMenu("Elige una opción", productBacklog.getTareas(), OpcionesMenu.ATRAS,
+				OpcionesMenu.ANADIR_TAREA);
 	}
 
 	public void menuTarea(Tarea t) {
@@ -107,10 +101,7 @@ public class InterfazUsuarioTexto {
 		System.out.println("Asignada a: " + t.getMiembro());
 		System.out.println(t.getRequisito());
 
-		System.out.println("");
-		System.out.println("[1] Modificar tarea");
-		System.out.println("[0] Atrás");
-		this.opcionUsuario = opcionMenu("Elige una opción", 0, 1);
+		this.opcionUsuario = opcionMenu("Elige una opción", OpcionesMenu.MODIFICAR_TAREA, OpcionesMenu.ATRAS);
 	}
 
 	public void menuModificarTarea(Tarea t, Map<Integer, MiembroDeEquipo> miembros, Backlog backlog) {
@@ -122,7 +113,6 @@ public class InterfazUsuarioTexto {
 		System.out.println("Asignada a: " + t.getMiembro());
 		System.out.println(t.getRequisito());
 
-		
 		System.out.println("\n**Se deben dejar los campos vacíos si no se quieren modificar. **\n");
 
 		System.out.println("Nuevo título: ");
@@ -136,17 +126,14 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
-		System.out.println("");
-		System.out.println("[0] Mantener miembro");
-		int nuevoMiembro=opcionMenu("Nuevo miembro", miembros,0);
-		
+		int nuevoMiembro = opcionMenu("Nuevo miembro", miembros, OpcionesMenu.MANTENER_MIEMBRO);
+
 		controladorKanban.modificarTarea(t.getIdTarea(), nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
 				nuevoMiembro, backlog);
 
 	}
 
 	public void menuAnadirTarea(Map<Integer, MiembroDeEquipo> miembros) {
-		
 
 		System.out.println("Nuevo título: ");
 		String nuevoTitulo = sc.nextLine();
@@ -159,25 +146,24 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
-		int nuevoMiembro=opcionMenu("Nuevo miembro", miembros);
+		int nuevoMiembro = opcionMenu("Nuevo miembro", miembros);
 		System.out.println("Tipo de requisito asociado: ");
-		System.out.println("[1] Historia de Usuario");
-		System.out.println("[2] Defecto");
-		
-		int intopcion = opcionMenu("Elige el tipo de requisito",1,2);
+
+		int intopcion = opcionMenu("Elige el tipo de requisito", OpcionesMenu.HISTORIA_DE_USUARIO,
+				OpcionesMenu.DEFECTO);
 		String actor = "";
 		String tarea = "";
 		switch (intopcion) {
-		case 1:
+		case 0:
 			System.out.println("Actor: ");
 			actor = sc.nextLine();
 			break;
-		case 2:
+		case 1:
 			System.out.println("Defecto asociado a la tarea: ");
 			tarea = sc.nextLine();
 			break;
 		}
-		
+
 		boolean anadida = controladorKanban.anadirTarea(nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
 				nuevoMiembro, actor, tarea);
 		if (!anadida) {
@@ -193,14 +179,11 @@ public class InterfazUsuarioTexto {
 			System.out.println(
 					"[" + par.getKey() + "] " + par.getValue().getTitulo() + " Estado: " + par.getValue().getEstado());
 		}
-		System.out.println("");
-		System.out.println("[1] Añadir tarea al Sprint.");
-		System.out.println("[2] Mover tarea.");
-		System.out.println("[3] Crear nuevo Sprint.");
-		System.out.println("[0] Atrás.");
 
 
-		opcionUsuario=opcionMenu("Escoja una opción o el ID de la tarea que quiere visualizar: ", sprintBacklog.getTareas(),0,1,2,3);
+		opcionUsuario = opcionMenu("Escoja una opción o el ID de la tarea que quiere visualizar: ",
+				sprintBacklog.getTareas(), OpcionesMenu.ANADIR_TAREA_AL_SPRINT, OpcionesMenu.MOVER_TAREA,
+				OpcionesMenu.CREAR_NUEVO_SPRINT, OpcionesMenu.ATRAS);
 	}
 
 	public void menuAnadirTareaSprint(ProductBacklog productBacklog) {
@@ -208,10 +191,11 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, Tarea> par : productBacklog.getTareas().entrySet()) {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getTitulo());
 		}
-		
-		System.out.println("");
-		System.out.println("[0] Atrás.");
-		opcionUsuario=opcionMenu("Escoja la tarea que se desea añadir o 0 para salir: ",productBacklog.getTareas(),0);
+
+
+
+		opcionUsuario = opcionMenu("Escoja la tarea que se desea añadir o 0 para salir: ", productBacklog.getTareas(),
+				OpcionesMenu.ATRAS);
 
 		if (opcionUsuario != 0) {
 			controladorKanban.anadirTareaSprint(opcionUsuario);
@@ -225,9 +209,7 @@ public class InterfazUsuarioTexto {
 					"[" + par.getKey() + "] " + par.getValue().getTitulo() + "Estado: " + par.getValue().getEstado());
 		}
 
-		System.out.println("");
-		System.out.println("[0] Atrás.");
-		opcionUsuario=opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ",sprintBacklog.getTareas(), 0);
+		opcionUsuario = opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ", sprintBacklog.getTareas(), OpcionesMenu.ATRAS);
 
 		if (opcionUsuario != 0) {
 
@@ -239,24 +221,23 @@ public class InterfazUsuarioTexto {
 
 	public void menuCrearNuevoSprint() {
 		System.out.println("*******CREAR NUEVO SPRINT********\n");
-		
+
 		System.out.println("Día del mes: ");
 		int dia = sc.nextInt();
 		System.out.println("Mes: ");
 		int mes = sc.nextInt();
 		System.out.println("Año: ");
 		int ano = sc.nextInt();
-		sc.nextLine(); 
+		sc.nextLine();
 		System.out.println("Descripcion: ");
-		String descripcion = sc.nextLine(); 
+		String descripcion = sc.nextLine();
 
 		System.out.println("¿Desea crear el nuevo sprint? (no se tendrá acceso al sprint anterior)");
-		System.out.println("[1] Crear nuevo Sprint.");
-		System.out.println("[0] Cancelar.");
-		
-		opcionUsuario=opcionMenu("Elige una opcion: ",0,1);
 
-		if (opcionUsuario == 1) {
+
+		opcionUsuario = opcionMenu("Elige una opcion: ", OpcionesMenu.ACEPTAR, OpcionesMenu.CANCELAR);
+
+		if (opcionUsuario == 0) {
 			controladorKanban.anadirNuevoSprint(dia, mes, ano, descripcion);
 		}
 
@@ -267,13 +248,7 @@ public class InterfazUsuarioTexto {
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
 			System.out.println("-" + par.getValue().getNombre());
 		}
-		System.out.println("");
-		System.out.println("[1] Añadir Miembro.");
-		System.out.println("[0] Atrás.");
-
-
-		opcionUsuario=opcionMenu("Escoja una opcion: ", 0,1);
-		
+		opcionUsuario = opcionMenu("Escoja una opcion: ", OpcionesMenu.ANADIR_MIEMBRO, OpcionesMenu.ATRAS);
 
 	}
 
@@ -284,20 +259,17 @@ public class InterfazUsuarioTexto {
 		String nombre = sc.nextLine();
 
 		System.out.println("¿Desea crear un miembro con el nobmre " + nombre + "?");
-		System.out.println("[1] Crear miembro.");
-		System.out.println("[0] Cancelar.");
 
+		opcionUsuario = opcionMenu("Escoja una opción: ", OpcionesMenu.ACEPTAR, OpcionesMenu.CANCELAR);
 
-		opcionUsuario=opcionMenu("Escoja una opción: ", 0,1);
-
-		if (opcionUsuario == 1) {
+		if (opcionUsuario == 0) {
 			controladorKanban.anadirNuevoMiembro(nombre);
 		}
 
 	}
 
 	public void init(Controlador controlador) {
-		this.sc=new Scanner(System.in);
+		this.sc = new Scanner(System.in);
 		this.controladorKanban = controlador;
 	}
 
