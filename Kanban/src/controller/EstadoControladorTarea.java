@@ -10,7 +10,10 @@ public class EstadoControladorTarea extends EstadoControlador{
 	private EstadoControladorTarea(){
 	
 	}
-	
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorTarea getInstancia(){
 		if(instancia == null){
 			instancia = new EstadoControladorTarea(); 

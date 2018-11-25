@@ -7,7 +7,10 @@ public class EstadoControladorPrincipal extends EstadoControlador{
 	private EstadoControladorPrincipal(){
 		
 	}
-	
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorPrincipal getInstancia(){
 		if(instancia == null){
 			instancia = new EstadoControladorPrincipal(); 

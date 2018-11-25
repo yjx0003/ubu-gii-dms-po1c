@@ -7,7 +7,10 @@ public class EstadoControladorCrearNuevoSprint extends EstadoControlador{
 	private EstadoControladorCrearNuevoSprint(){
 		
 	}
-	
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorCrearNuevoSprint getInstancia(){
 		if(instancia == null){
 			instancia = new EstadoControladorCrearNuevoSprint(); 

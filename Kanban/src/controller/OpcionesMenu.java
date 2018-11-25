@@ -1,5 +1,10 @@
 package controller;
-
+/**
+ * Enumeracion de las posibles opciones de menu
+ * @author Alicia Olivares Gil
+ * @author Yi Peng Ji
+ *
+ */
 public enum OpcionesMenu {
 	
 	PRODUCT_BACKLOG("Product Backlog"),
@@ -27,7 +32,10 @@ public enum OpcionesMenu {
 	OpcionesMenu(String nombre){
 		this.nombre=nombre;
 	}
-	
+	/**
+	 * Nombre de la opcion de menu
+	 * @return nombre
+	 */
 	public String getNombre() {
 		return this.nombre;
 	}

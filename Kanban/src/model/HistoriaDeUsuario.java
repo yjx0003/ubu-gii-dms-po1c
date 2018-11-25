@@ -9,7 +9,10 @@ public class HistoriaDeUsuario extends Requisito {
 		super(titulo, descripcion);
 		this.actor = actor; 
 	}
-	
+	/**
+	 * Devuelve el actor (Cliente,Programador etc) de la historia de usuario.
+	 * @return actor
+	 */
 	public String getActor(){
 		return this.actor; 
 	}

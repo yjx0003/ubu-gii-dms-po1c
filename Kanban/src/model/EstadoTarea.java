@@ -1,5 +1,10 @@
 package model;
-
+/**
+ * Estados posibles de una tarea
+ * @author Alicia Olivares Gil
+ * @author Yi Peng Ji
+ *
+ */
 public abstract class EstadoTarea {
 	
 	protected String nombreEstado; 

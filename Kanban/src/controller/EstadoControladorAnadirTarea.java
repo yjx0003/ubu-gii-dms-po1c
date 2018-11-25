@@ -8,7 +8,10 @@ public class EstadoControladorAnadirTarea extends EstadoControlador{
 	
 	private EstadoControladorAnadirTarea(){
 	}
-	
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorAnadirTarea getInstancia(){
 		if(instancia == null){
 			instancia = new EstadoControladorAnadirTarea(); 

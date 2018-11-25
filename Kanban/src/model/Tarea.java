@@ -1,5 +1,10 @@
 package model;
-
+/**
+ * Clase tarea
+ * @author Alicia Olivares Gil
+ * @author Yi Peng Ji
+ *
+ */
 public class Tarea {
 	private static int contadorIds; 
 	
@@ -10,7 +15,13 @@ public class Tarea {
 	private MiembroDeEquipo miembro;
 
 	private EstadoTarea estado; 
-
+	/**
+	 * Constructor de tarea.
+	 * @param coste coste
+	 * @param beneficio beneficio
+	 * @param requisito requisito
+	 * @param miembro miembro
+	 */
 	public Tarea(int coste, int beneficio, Requisito requisito,MiembroDeEquipo miembro) {
 		this.idTarea= contadorIds++; 
 		this.coste = coste;
@@ -20,7 +31,14 @@ public class Tarea {
 		this.estado = EstadoTareaPendiente.getInstancia(); 
 		
 	}
-	
+	/**
+	 * Constructor de tarea.
+	 * @param idTarea idTarea
+	 * @param coste coste
+	 * @param beneficio beneficio
+	 * @param requisito requisito
+	 * @param miembro miembro
+	 */
 	public Tarea(int idTarea, int coste, int beneficio, Requisito requisito,MiembroDeEquipo miembro) {
 		this.idTarea = idTarea; 
 		this.coste = coste;

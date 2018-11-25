@@ -7,7 +7,10 @@ public class EstadoControladorCerrar extends EstadoControlador {
 	private EstadoControladorCerrar() {
 		
 	}
-	
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorCerrar getInstancia() {
 		if(instancia==null) {
 			instancia=new EstadoControladorCerrar();

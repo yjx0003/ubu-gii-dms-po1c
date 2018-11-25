@@ -7,7 +7,10 @@ public class EstadoControladorMoverTarea extends EstadoControlador{
 	private EstadoControladorMoverTarea(){
 		
 	}
-	
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorMoverTarea getInstancia(){
 		if(instancia == null){
 			instancia = new EstadoControladorMoverTarea(); 
@@ -22,7 +25,7 @@ public class EstadoControladorMoverTarea extends EstadoControlador{
 
 	@Override
 	public void mostrarMenu(Controlador c) {
-		c.getVistaKanban().menuMoverTarea(c.getModeloKanban().getSprintBacklog());	
+		c.getVistaKanban().menuMoverTarea(c.getModeloKanban().getProductBacklog(),c.getModeloKanban().getSprintBacklog());	
 	}
 
 }

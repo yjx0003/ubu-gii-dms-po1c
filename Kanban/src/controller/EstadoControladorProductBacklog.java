@@ -9,7 +9,10 @@ public class EstadoControladorProductBacklog extends EstadoControlador {
 	private EstadoControladorProductBacklog() {
 
 	}
-
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorProductBacklog getInstancia() {
 		if (instancia == null) {
 			instancia = new EstadoControladorProductBacklog();

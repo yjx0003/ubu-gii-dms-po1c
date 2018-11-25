@@ -14,6 +14,13 @@ import model.ProductBacklog;
 import model.SprintBacklog;
 import model.Tarea;
 
+/**
+ * Clase de la interfaz de usuario en texto, imprime todos los menus.
+ * 
+ * @author Alicia Olivares Gil
+ * @author Yi Peng Ji
+ *
+ */
 public class InterfazUsuarioTexto {
 
 	private Controlador controladorKanban;
@@ -34,11 +41,20 @@ public class InterfazUsuarioTexto {
 		}
 		return instancia;
 	}
-
+	/**
+	 * Devuelve la opcion de usuario en el menu actual.
+	 * @return opcion de usuario.
+	 */
 	public int getOpcionUsuario() {
 		return this.opcionUsuario;
 	}
-
+	/**
+	 * Bucle infinito hasta que se devuelva una opcion valida por el usuario
+	 * @param preguntaOpcion texto que se muestra
+	 * @param mapa mapa de miembros, product back log y sprint backlog o null 
+	 * @param opcionesValidos OpcionesMenu validos
+	 * @return
+	 */
 	private int opcionMenu(String preguntaOpcion, Map<Integer, ?> mapa, OpcionesMenu... opcionesValidos) {
 		System.out.println("");
 		for (int i = 0; i < opcionesValidos.length; i++) {
@@ -66,16 +82,25 @@ public class InterfazUsuarioTexto {
 
 		}
 	}
-
+	/**
+	 * Cierra el scanner de teclado
+	 */
 	public void cerrarRecursos() {
 		sc.close();
 	}
-
+	/**
+	 * Bucle infinito hasta que se devuelva una opcion valida por el usuario
+	 * @param preguntaOpcion texto que se muestra
+	 * @param opcionesValidos OpcionesMenu validos
+	 * @return
+	 */
 	private int opcionMenu(String preguntaOpcion, OpcionesMenu... opcionesValidos) {
 		return opcionMenu(preguntaOpcion, null, opcionesValidos);
 
 	}
-
+	/**
+	 * Menu inicial.
+	 */
 	public void menuPrincipal() {
 		System.out.println("********MENÚ SCRUM********\n");
 
@@ -83,7 +108,10 @@ public class InterfazUsuarioTexto {
 				OpcionesMenu.GESTION_MIEBROS, OpcionesMenu.GUARDAR_Y_CERRAR);
 
 	}
-
+	/**
+	 * Menu del product backlog, muestra todas las tareas de ese backlog
+	 * @param productBacklog productBacklog
+	 */
 	public void menuProductBacklog(ProductBacklog productBacklog) {
 		System.out.println("*******PRODUCT BACKLOG********\n");
 		System.out.println("Tareas: ");
@@ -94,7 +122,10 @@ public class InterfazUsuarioTexto {
 		this.opcionUsuario = opcionMenu("Elige una opción", productBacklog.getTareas(), OpcionesMenu.ATRAS,
 				OpcionesMenu.ANADIR_TAREA);
 	}
-
+	/**
+	 *  Muestra los datos de tarea
+	 * @param t tarea a mostrar
+	 */
 	public void menuTarea(Tarea t) {
 		System.out.println("*******TAREA " + t.getIdTarea() + "********\n");
 		System.out.println("Titulo: " + t.getTitulo());
@@ -106,7 +137,12 @@ public class InterfazUsuarioTexto {
 
 		this.opcionUsuario = opcionMenu("Elige una opción", OpcionesMenu.MODIFICAR_TAREA, OpcionesMenu.ATRAS);
 	}
-
+	/**
+	 * Menu de modificar la tarea.
+	 * @param t tarea a modificar
+	 * @param miembros todos los miembros a elegir uno
+	 * @param backlog backlog de la tarea
+	 */
 	public void menuModificarTarea(Tarea t, Map<Integer, MiembroDeEquipo> miembros, Backlog backlog) {
 		System.out.println("*******MODIFICAR TAREA " + t.getIdTarea() + "********\n");
 		System.out.println("Titulo: " + t.getTitulo());
@@ -130,14 +166,17 @@ public class InterfazUsuarioTexto {
 			System.out.println("[" + par.getKey() + "] " + par.getValue().getNombre());
 		}
 		int nuevoMiembro = opcionMenu("Nuevo miembro", miembros, OpcionesMenu.MANTENER_MIEMBRO);
-		if (nuevoMiembro==OpcionesMenu.MANTENER_MIEMBRO.ordinal()) {
-			nuevoMiembro=0;
+		if (nuevoMiembro == OpcionesMenu.MANTENER_MIEMBRO.ordinal()) {
+			nuevoMiembro = 0;
 		}
 		controladorKanban.modificarTarea(t.getIdTarea(), nuevoTitulo, nuevaDescripcion, nuevoCoste, nuevoBeneficio,
 				nuevoMiembro, backlog);
 
 	}
-
+	/**
+	 * Menu de añadir tarea.
+	 * @param miembros miembros donde se elegira uno
+	 */
 	public void menuAnadirTarea(Map<Integer, MiembroDeEquipo> miembros) {
 
 		System.out.println("Nuevo título: ");
@@ -180,7 +219,10 @@ public class InterfazUsuarioTexto {
 		}
 
 	}
-
+	/**
+	 * Menu del sprint backlog
+	 * @param sprintBacklog sprintbacklog
+	 */
 	public void menuSprintBacklog(SprintBacklog sprintBacklog) {
 		System.out.println("*******SPRINT BACKLOG********\n");
 		System.out.println(sprintBacklog.getDescripcion());
@@ -193,7 +235,10 @@ public class InterfazUsuarioTexto {
 				sprintBacklog.getTareas(), OpcionesMenu.ANADIR_TAREA_AL_SPRINT, OpcionesMenu.MOVER_TAREA,
 				OpcionesMenu.CREAR_NUEVO_SPRINT, OpcionesMenu.ATRAS);
 	}
-
+	/**
+	 * Menu de añadir tareas al sprintbacklog
+	 * @param productBacklog productBacklog
+	 */
 	public void menuAnadirTareaSprint(ProductBacklog productBacklog) {
 		System.out.println("*******AÑADIR TAREA A SPRINT********\n");
 		for (Map.Entry<Integer, Tarea> par : productBacklog.getTareas().entrySet()) {
@@ -207,15 +252,19 @@ public class InterfazUsuarioTexto {
 			controladorKanban.anadirTareaSprint(opcionUsuario);
 		}
 	}
-
-	public void menuMoverTarea(SprintBacklog sprintBacklog) {
+	/**
+	 * Menu de mover tarea del product backlog al sprint backlog
+	 * @param productBacklog productBacklog
+	 * @param sprintBacklog sprintBacklog
+	 */
+	public void menuMoverTarea(ProductBacklog productBacklog, SprintBacklog sprintBacklog) {
 		System.out.println("*******MOVER TAREA********\n");
-		for (Map.Entry<Integer, Tarea> par : sprintBacklog.getTareas().entrySet()) {
+		for (Map.Entry<Integer, Tarea> par : productBacklog.getTareas().entrySet()) {
 			System.out.println(
 					"[" + par.getKey() + "] " + par.getValue().getTitulo() + "Estado: " + par.getValue().getEstado());
 		}
 
-		opcionUsuario = opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ", sprintBacklog.getTareas(),
+		opcionUsuario = opcionMenu("Escoja la tarea que se desea mover o 0 para salir: ", productBacklog.getTareas(),
 				OpcionesMenu.ATRAS);
 
 		if (opcionUsuario != OpcionesMenu.ATRAS.ordinal()) {
@@ -225,7 +274,9 @@ public class InterfazUsuarioTexto {
 		}
 
 	}
-
+	/**
+	 * Menu crear nuevo sprint
+	 */
 	public void menuCrearNuevoSprint() {
 		System.out.println("*******CREAR NUEVO SPRINT********\n");
 
@@ -248,7 +299,10 @@ public class InterfazUsuarioTexto {
 		}
 
 	}
-
+	/**
+	 * Menu de mostrar los miembros de equipo
+	 * @param miembros miembros
+	 */
 	public void menuMiembros(Map<Integer, MiembroDeEquipo> miembros) {
 		System.out.println("*******MIEMBROS DE EQUIPO********\n");
 		for (Map.Entry<Integer, MiembroDeEquipo> par : miembros.entrySet()) {
@@ -257,7 +311,9 @@ public class InterfazUsuarioTexto {
 		opcionUsuario = opcionMenu("Escoja una opcion: ", OpcionesMenu.ANADIR_MIEMBRO, OpcionesMenu.ATRAS);
 
 	}
-
+	/**
+	 * Menu de añadir un miembro.
+	 */
 	public void menuAnadirMiembro() {
 		System.out.println("*******CREAR NUEVO MIEMBRO*******\n");
 
@@ -272,21 +328,27 @@ public class InterfazUsuarioTexto {
 			controladorKanban.anadirNuevoMiembro(nombre);
 		}
 	}
-
+	/**
+	 * Inicia la vista instanciando el scanner y asignando el controlador
+	 * @param controlador controlador
+	 */
 	public void init(Controlador controlador) {
 		this.sc = new Scanner(System.in);
 		this.controladorKanban = controlador;
 	}
-
+	/**
+	 * Menu de pedir siguiente estado
+	 * @return nuevo estado
+	 */
 	public EstadoTarea pedirSiguienteEstado() {
 		System.out.println("¿Es necesario que la tarea vuelva al estado \"En Proceso\"?");
-		int respuesta = opcionMenu("Escoja una opción: ", OpcionesMenu.SI, OpcionesMenu.NO); 
-		if(respuesta == OpcionesMenu.SI.ordinal()){
-			return EstadoTareaEnProceso.getInstancia(); 
-		}else{
-			return EstadoTareaCompletada.getInstancia(); 
+		int respuesta = opcionMenu("Escoja una opción: ", OpcionesMenu.SI, OpcionesMenu.NO);
+		if (respuesta == OpcionesMenu.SI.ordinal()) {
+			return EstadoTareaEnProceso.getInstancia();
+		} else {
+			return EstadoTareaCompletada.getInstancia();
 		}
-		
+
 	}
 
 }

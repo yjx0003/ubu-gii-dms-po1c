@@ -7,7 +7,12 @@ public class EstadoControladorAnadirMiembro extends EstadoControlador{
 	private EstadoControladorAnadirMiembro(){
 		
 	}
-	
+
+	/**
+	 * Devuelve la instancia unica.
+	 * 
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorAnadirMiembro getInstancia(){
 		if(instancia == null){
 			instancia = new EstadoControladorAnadirMiembro(); 

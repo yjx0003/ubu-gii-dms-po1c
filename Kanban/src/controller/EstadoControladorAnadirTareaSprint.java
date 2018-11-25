@@ -7,7 +7,10 @@ public class EstadoControladorAnadirTareaSprint extends EstadoControlador{
 	private EstadoControladorAnadirTareaSprint(){
 		
 	}
-	
+	/**
+	 * Devuelve la instancia unica.
+	 * @return devuelve la unica instancia.
+	 */
 	public static EstadoControladorAnadirTareaSprint getInstancia(){
 		if(instancia == null){
 			instancia = new EstadoControladorAnadirTareaSprint(); 
