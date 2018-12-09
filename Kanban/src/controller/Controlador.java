@@ -8,9 +8,11 @@ import model.EstadoTareaCompletada;
 import model.EstadoTareaEnValidacion;
 import model.HistoriaDeUsuario;
 import model.MiembroDeEquipo;
-import model.PersistenciaAbstracta;
 import model.Requisito;
 import model.Tarea;
+import persistence.PersistenciaAbstracta;
+import view.EstadoVista;
+import view.EstadoVistaPrincipal;
 import view.InterfazUsuarioTexto;
 
 /**
@@ -24,12 +26,12 @@ public class Controlador {
 
 	private PersistenciaAbstracta modeloKanban;
 	private InterfazUsuarioTexto vistaKanban;
-	private EstadoControlador estado;
+
 
 	private static Controlador instancia = null;
 
-	private Controlador() {
-		estado = EstadoControladorPrincipal.getInstancia();
+	private Controlador(){
+		
 	}
 
 	/**
@@ -44,16 +46,7 @@ public class Controlador {
 		return instancia;
 	}
 
-	/**
-	 * Cambia el estado del controlador.
-	 * 
-	 * @param e
-	 *            nuevo estado del controlador.
-	 * 
-	 */
-	public void cambiarEstado(EstadoControlador e) {
-		this.estado = e;
-	}
+
 
 	/**
 	 * Inicia la vista y el modelo, tambien imprime el menu de la vista.
@@ -69,11 +62,6 @@ public class Controlador {
 
 		modeloKanban.leerPersistencia();
 		vistaKanban.init(this);
-
-		while (true) {
-			estado.mostrarMenu(this);
-			estado.actualizarEstado(this);
-		}
 	}
 
 	/**
@@ -94,14 +82,7 @@ public class Controlador {
 		return vistaKanban;
 	}
 
-	/**
-	 * Devuelve el estado actual del controlador.
-	 * 
-	 * @return estado actual del controlador.
-	 */
-	public EstadoControlador getEstado() {
-		return estado;
-	}
+
 
 	/**
 	 * Modifica la tarea a partir de los parametros recibidos, los parametros vacios
@@ -217,10 +198,7 @@ public class Controlador {
 	 *            id de la tarea que se quiere actualizar.
 	 */
 	public void moverTarea(int idTarea) {
-		if (this.modeloKanban.getSprintBacklog().getTareas().get(idTarea)
-				.getEstado() instanceof EstadoTareaEnValidacion) {
-			EstadoTareaEnValidacion.getInstancia().setSiguienteEstado(this.getVistaKanban().pedirSiguienteEstado());
-		}
+
 		modeloKanban.getSprintBacklog().getTareas().get(idTarea).actualizarEstado();
 		modeloKanban.commitSprintBacklog();
 	}
@@ -269,6 +247,7 @@ public class Controlador {
 	public void close() {
 		vistaKanban.cerrarRecursos();
 		modeloKanban.commit();
+		System.out.println("Se ha cerrado la aplicación con éxito.");
 		System.exit(0);
 
 	}
