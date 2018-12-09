@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ProductBacklog>
+  <idSiguiente id="31"/>
+  <tarea id="25">
+    <coste>13</coste>
+    <beneficio>6</beneficio>
+    <titulo>Tarea 6</titulo>
+    <descripcion>Descripcion 6</descripcion>
+    <miembroAsignado>23</miembroAsignado>
+    <estado>Pendiente</estado>
+    <tareaAsociada>21</tareaAsociada>
+  </tarea>
+  <tarea id="26">
+    <coste>21</coste>
+    <beneficio>7</beneficio>
+    <titulo>Tarea 7</titulo>
+    <descripcion>Descripcion 7</descripcion>
+    <miembroAsignado>21</miembroAsignado>
+    <estado>Pendiente</estado>
+    <actor>Cliente</actor>
+  </tarea>
+  <tarea id="27">
+    <coste>3</coste>
+    <beneficio>8</beneficio>
+    <titulo>Tarea 8</titulo>
+    <descripcion>Descripcion 8</descripcion>
+    <miembroAsignado>22</miembroAsignado>
+    <estado>Pendiente</estado>
+    <tareaAsociada>22</tareaAsociada>
+  </tarea>
+  <tarea id="28">
+    <coste>5</coste>
+    <beneficio>9</beneficio>
+    <titulo>Tarea 9</titulo>
+    <descripcion>Descripcion 9</descripcion>
+    <miembroAsignado>20</miembroAsignado>
+    <estado>Pendiente</estado>
+    <actor>Administrador</actor>
+  </tarea>
+  <tarea id="29">
+    <coste>8</coste>
+    <beneficio>10</beneficio>
+    <titulo>Tarea 10</titulo>
+    <descripcion>Descripcion 10</descripcion>
+    <miembroAsignado>21</miembroAsignado>
+    <estado>Pendiente</estado>
+    <tareaAsociada>22</tareaAsociada>
+  </tarea>
+  <tarea id="30">
+    <coste>21</coste>
+    <beneficio>11</beneficio>
+    <titulo>Tarea 11</titulo>
+    <descripcion>Descripcion 11</descripcion>
+    <miembroAsignado>22</miembroAsignado>
+    <estado>Pendiente</estado>
+    <tareaAsociada>23</tareaAsociada>
+  </tarea>
+</ProductBacklog>
