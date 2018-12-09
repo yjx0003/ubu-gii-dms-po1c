@@ -45,7 +45,7 @@ public class EstadoVistaSprintBacklog extends EstadoVista {
 	@Override
 	public void mostrarMenu(InterfazUsuarioTexto ui) {
 		SprintBacklog sprintBacklog = ui.getControlador().getModeloKanban().getSprintBacklog(); 
-		EstadoVistaModificarTarea.getInstancia().setBacklog(ui.getControlador().getModeloKanban().getProductBacklog());
+		EstadoVistaModificarTarea.getInstancia().setBacklog(sprintBacklog);
 
 		System.out.println("*******SPRINT BACKLOG********\n");
 		System.out.println(sprintBacklog.getDescripcion());
