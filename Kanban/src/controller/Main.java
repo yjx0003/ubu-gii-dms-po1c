@@ -1,8 +1,8 @@
 package controller;
 
-import controller.Controlador; 
-import model.PersistenciaAbstracta; 
-import model.PersistenciaCSV;
+import controller.Controlador;
+import persistence.PersistenciaAbstracta;
+import persistence.PersistenciaCSV;
 import view.InterfazUsuarioTexto;
 
 public class Main {

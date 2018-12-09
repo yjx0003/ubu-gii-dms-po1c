@@ -1,4 +1,4 @@
-package controller;
+package view;
 /**
  * Enumeracion de las posibles opciones de menu
  * @author Alicia Olivares Gil

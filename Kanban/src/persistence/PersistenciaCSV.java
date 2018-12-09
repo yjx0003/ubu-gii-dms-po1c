@@ -1,4 +1,4 @@
-package model;
+package persistence;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,6 +11,18 @@ import java.util.HashMap;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+
+import model.Defecto;
+import model.EstadoTareaCompletada;
+import model.EstadoTareaEnProceso;
+import model.EstadoTareaEnValidacion;
+import model.EstadoTareaPendiente;
+import model.HistoriaDeUsuario;
+import model.MiembroDeEquipo;
+import model.ProductBacklog;
+import model.Requisito;
+import model.SprintBacklog;
+import model.Tarea;
 
 public class PersistenciaCSV extends PersistenciaAbstracta {
 
