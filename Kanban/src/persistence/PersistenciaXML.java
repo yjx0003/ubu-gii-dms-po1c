@@ -37,6 +37,12 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 		
 	}
 	
+	public void init(SprintBacklog sprintBacklog, ProductBacklog productBacklog, Map<Integer, MiembroDeEquipo> map) {
+		this.sprintBacklog=sprintBacklog;
+		this.productBacklog=productBacklog;
+		this.miembros=map;
+	}
+	
 	public static PersistenciaXML getInstancia() {
 		if (instancia==null) {
 			instancia=new PersistenciaXML();
@@ -62,6 +68,8 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 	public void commitMiembrosDeEquipo() {
 
 		try {
+			File file=new File(fileMiembroDeEquipo);
+			file.delete();
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder;
 			docBuilder = docFactory.newDocumentBuilder();
@@ -80,7 +88,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 
 			DOMSource domSource = new DOMSource(doc);
 
-			StreamResult streamResult = new StreamResult(new File(fileMiembroDeEquipo));
+			StreamResult streamResult = new StreamResult(file);
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
@@ -113,7 +121,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 		addAtributos(doc, elemento, "titulo", tarea.getTitulo());
 		addAtributos(doc, elemento, "descripcion", tarea.getDescripcion());
 		addAtributos(doc, elemento, "miembroAsignado", Integer.toString(tarea.getMiembro().getIdMiembro()));
-		addAtributos(doc, elemento, "estado", tarea.getEstado().getNombreEstado());
+		addAtributos(doc, elemento, "estado", tarea.getEstado().toString());
 
 		if (tarea.getRequisito() instanceof HistoriaDeUsuario) {
 			HistoriaDeUsuario hdu = (HistoriaDeUsuario) tarea.getRequisito();
@@ -135,6 +143,8 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 	@Override
 	public void commitProductBacklog() {
 		try {
+			File file=new File(fileProductBacklog);
+			file.delete();
 			System.out.println(productBacklog.getTareas());
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder;
@@ -156,7 +166,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 
 			DOMSource domSource = new DOMSource(doc);
 
-			StreamResult streamResult = new StreamResult(new File(fileProductBacklog));
+			StreamResult streamResult = new StreamResult(file);
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
@@ -178,6 +188,8 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 	@Override
 	public void commitSprintBacklog() {
 		try {
+			File file=new File(fileSprintBacklog);
+			file.delete();
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder;
 			docBuilder = docFactory.newDocumentBuilder();
@@ -187,7 +199,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 			doc.appendChild(raiz);
 			Element descripcionSprint = doc.createElement("descripcionSprint");
 			descripcionSprint.setAttribute("descripcion", sprintBacklog.getDescripcion());
-			for (Tarea t : productBacklog.getTareas().values()) {
+			for (Tarea t : sprintBacklog.getTareas().values()) {
 				raiz.appendChild(getElemento(doc, t));
 			}
 
@@ -197,7 +209,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 
 			DOMSource domSource = new DOMSource(doc);
 
-			StreamResult streamResult = new StreamResult(new File(fileSprintBacklog));
+			StreamResult streamResult = new StreamResult(file);
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
