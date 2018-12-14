@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <MiembroDeEquipo>
+  <idSiguiente id="25"/>
   <miembro id="20">
     <Nombre>Alicia</Nombre>
   </miembro>

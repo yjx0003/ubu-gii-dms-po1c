@@ -1,6 +1,9 @@
 package persistence;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -17,11 +20,18 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import model.Defecto;
+import model.EstadoTareaCompletada;
+import model.EstadoTareaEnProceso;
+import model.EstadoTareaEnValidacion;
+import model.EstadoTareaPendiente;
 import model.HistoriaDeUsuario;
 import model.MiembroDeEquipo;
 import model.ProductBacklog;
+import model.Requisito;
 import model.SprintBacklog;
 import model.Tarea;
 
@@ -32,28 +42,206 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 	private final String fileProductBacklog = "xml/ProductBacklog.xml";
 	private final String fileSprintBacklog = "xml/SprintBacklog.xml";
 
-	
 	private PersistenciaXML() {
-		
+
 	}
-	
-	public void init(SprintBacklog sprintBacklog, ProductBacklog productBacklog, Map<Integer, MiembroDeEquipo> map) {
-		this.sprintBacklog=sprintBacklog;
-		this.productBacklog=productBacklog;
-		this.miembros=map;
-	}
-	
+
 	public static PersistenciaXML getInstancia() {
-		if (instancia==null) {
-			instancia=new PersistenciaXML();
+		if (instancia == null) {
+			instancia = new PersistenciaXML();
 		}
 		return instancia;
 	}
-	
+
 	@Override
 	public void leerPersistencia() {
-		// TODO Auto-generated method stub
+		leerMiembrosDeEquipo();
+		leerProductBacklog();
+		leerSprintBacklog();
+	}
 
+	public void leerMiembrosDeEquipo() {
+		try {
+			File file = new File(fileMiembroDeEquipo);
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder;
+			docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.newDocument();
+			doc = docBuilder.parse(file);
+
+			doc.getDocumentElement().normalize();
+			NodeList nList = doc.getElementsByTagName("miembro");
+
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element elemento = (Element) nNode;
+					int id = Integer.valueOf(elemento.getAttribute("id"));
+					String nombre = elemento.getElementsByTagName("Nombre").item(0).getTextContent();
+					MiembroDeEquipo m = new MiembroDeEquipo(id, nombre);
+					miembros.put(id, m);
+				}
+			}
+
+			nList = doc.getElementsByTagName("idSiguiente");
+			Node nNode = nList.item(0);
+			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				Element elemento = (Element) nNode;
+				MiembroDeEquipo.setContadorIds(Integer.valueOf(elemento.getAttribute("id")));
+			}
+
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void leerProductBacklog() {
+		try {
+			productBacklog = ProductBacklog.getInstancia(); 
+			
+			File file = new File(fileProductBacklog);
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder;
+			docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.newDocument();
+			doc = docBuilder.parse(file);
+
+			doc.getDocumentElement().normalize();
+			NodeList nList = doc.getElementsByTagName("tarea");
+
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element elemento = (Element) nNode;
+					int id = Integer.valueOf(elemento.getAttribute("id"));
+					int coste = Integer.valueOf(elemento.getElementsByTagName("coste").item(0).getTextContent());
+					int beneficio = Integer
+							.valueOf(elemento.getElementsByTagName("beneficio").item(0).getTextContent());
+					String titulo = elemento.getElementsByTagName("titulo").item(0).getTextContent();
+					String descripcion = elemento.getElementsByTagName("descripcion").item(0).getTextContent();
+
+					int miembroAsignado = Integer
+							.valueOf(elemento.getElementsByTagName("miembroAsignado").item(0).getTextContent());
+
+					Requisito r;
+					if (elemento.getElementsByTagName("tareaAsociada").getLength() != 0) {
+						int tareaAsociada = Integer
+								.valueOf(elemento.getElementsByTagName("tareaAsociada").item(0).getTextContent());
+						r = new Defecto(titulo, descripcion, tareaAsociada);
+					} else {
+						String actor = elemento.getElementsByTagName("actor").item(0).getTextContent();
+						r = new HistoriaDeUsuario(titulo, descripcion, actor);
+					}
+
+					Tarea t = new Tarea(id, coste, beneficio, r, miembros.get(miembroAsignado));
+					productBacklog.anadirTarea(t);
+				}
+			}
+
+			nList = doc.getElementsByTagName("idSiguiente");
+			Node nNode = nList.item(0);
+			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+				Element elemento = (Element) nNode;
+				Tarea.setContadorIds(Integer.valueOf(elemento.getAttribute("id")));
+			}
+
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void leerSprintBacklog() {
+		
+		try {
+			
+			sprintBacklog = SprintBacklog.getInstancia(); 
+			
+			File file = new File(fileSprintBacklog);
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder;
+			docBuilder = docFactory.newDocumentBuilder();
+			Document doc = docBuilder.newDocument();
+			doc = docBuilder.parse(file);
+
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName("descripcionSprint");
+			Node nNode = nList.item(0); 
+			String descripcionSprint = null; 
+			if(nNode.getNodeType() == Node.ELEMENT_NODE){
+				Element elemento = (Element) nNode; 
+				 descripcionSprint = elemento.getAttribute("descripcion"); 
+			}
+			
+			nList = doc.getElementsByTagName("fechaInicio");
+			nNode = nList.item(0); 
+			Calendar fechaInicio = null; 
+			if(nNode.getNodeType() == Node.ELEMENT_NODE){
+				Element elemento = (Element) nNode; 
+				int dia = Integer.valueOf(elemento.getElementsByTagName("dia").item(0).getTextContent()); 
+				int mes = Integer.valueOf(elemento.getElementsByTagName("mes").item(0).getTextContent()); 
+				int anio = Integer.valueOf(elemento.getElementsByTagName("anio").item(0).getTextContent()); 
+				fechaInicio = new GregorianCalendar(anio, mes, dia);
+			}
+			
+			sprintBacklog.iniciar(descripcionSprint, fechaInicio);
+			
+			nList = doc.getElementsByTagName("tarea");
+
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element elemento = (Element) nNode;
+					int id = Integer.valueOf(elemento.getAttribute("id"));
+					int coste = Integer.valueOf(elemento.getElementsByTagName("coste").item(0).getTextContent());
+					int beneficio = Integer
+							.valueOf(elemento.getElementsByTagName("beneficio").item(0).getTextContent());
+					String titulo = elemento.getElementsByTagName("titulo").item(0).getTextContent();
+					String descripcion = elemento.getElementsByTagName("descripcion").item(0).getTextContent();
+
+					int miembroAsignado = Integer
+							.valueOf(elemento.getElementsByTagName("miembroAsignado").item(0).getTextContent());
+
+					Requisito r;
+					if (elemento.getElementsByTagName("tareaAsociada").getLength() != 0) {
+						int tareaAsociada = Integer
+								.valueOf(elemento.getElementsByTagName("tareaAsociada").item(0).getTextContent());
+						r = new Defecto(titulo, descripcion, tareaAsociada);
+					} else {
+						String actor = elemento.getElementsByTagName("actor").item(0).getTextContent();
+						r = new HistoriaDeUsuario(titulo, descripcion, actor);
+					}
+					
+					String estado = elemento.getElementsByTagName("estado").item(0).getTextContent();  
+
+					Tarea t = new Tarea(id, coste, beneficio, r, miembros.get(miembroAsignado));
+					
+					switch (estado) {
+					case "Pendiente":
+						t.cambiarEstado(EstadoTareaPendiente.getInstancia());
+						break;
+					case "En Proceso":
+						t.cambiarEstado(EstadoTareaEnProceso.getInstancia());
+						break;
+					case "En Validacion":
+						t.cambiarEstado(EstadoTareaEnValidacion.getInstancia());
+						break;
+					case "Completada":
+						t.cambiarEstado(EstadoTareaCompletada.getInstancia());
+						break;
+					}
+					sprintBacklog.anadirTarea(t); 
+					
+				}
+			}
+
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -68,7 +256,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 	public void commitMiembrosDeEquipo() {
 
 		try {
-			File file=new File(fileMiembroDeEquipo);
+			File file = new File(fileMiembroDeEquipo);
 			file.delete();
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder;
@@ -76,7 +264,10 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 			Document doc = docBuilder.newDocument();
 
 			Element raiz = doc.createElement("MiembroDeEquipo");
+			Element idSiguiente = doc.createElement("idSiguiente");
+			idSiguiente.setAttribute("id", Integer.toString(MiembroDeEquipo.getContadorIds()));
 			doc.appendChild(raiz);
+			raiz.appendChild(idSiguiente); 
 
 			for (MiembroDeEquipo miembro : miembros.values()) {
 				raiz.appendChild(getElemento(doc, miembro));
@@ -93,13 +284,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			transformer.transform(domSource, streamResult);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
+		} catch (ParserConfigurationException | TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -143,7 +328,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 	@Override
 	public void commitProductBacklog() {
 		try {
-			File file=new File(fileProductBacklog);
+			File file = new File(fileProductBacklog);
 			file.delete();
 			System.out.println(productBacklog.getTareas());
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -171,14 +356,8 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			transformer.transform(domSource, streamResult);
-			
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
+
+		} catch (ParserConfigurationException | TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -188,7 +367,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 	@Override
 	public void commitSprintBacklog() {
 		try {
-			File file=new File(fileSprintBacklog);
+			File file = new File(fileSprintBacklog);
 			file.delete();
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder;
@@ -199,6 +378,16 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 			doc.appendChild(raiz);
 			Element descripcionSprint = doc.createElement("descripcionSprint");
 			descripcionSprint.setAttribute("descripcion", sprintBacklog.getDescripcion());
+			raiz.appendChild(descripcionSprint); 
+			
+			Element fecha = doc.createElement("fechaInicio"); 
+			raiz.appendChild(fecha); 
+			Calendar fechaInicio = sprintBacklog.getFechaInicio(); 
+			
+			addAtributos(doc, fecha, "dia", Integer.toString(fechaInicio.get(Calendar.DAY_OF_MONTH))); 
+			addAtributos(doc, fecha, "mes", Integer.toString(fechaInicio.get(Calendar.MONTH))); 
+			addAtributos(doc, fecha, "anio", Integer.toString(fechaInicio.get(Calendar.YEAR))); 
+			
 			for (Tarea t : sprintBacklog.getTareas().values()) {
 				raiz.appendChild(getElemento(doc, t));
 			}
@@ -214,13 +403,7 @@ public class PersistenciaXML extends PersistenciaAbstracta {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			transformer.transform(domSource, streamResult);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
+		} catch (ParserConfigurationException | TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

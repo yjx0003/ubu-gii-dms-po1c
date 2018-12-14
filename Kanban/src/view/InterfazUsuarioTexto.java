@@ -20,9 +20,9 @@ import model.Tarea;
  * @author Yi Peng Ji
  *
  */
-public class InterfazUsuarioTexto {
+public class InterfazUsuarioTexto extends InterfazUsuarioAbstracta {
 
-	private Controlador controladorKanban;
+
 	private EstadoVista estado;
 
 
@@ -68,8 +68,8 @@ public class InterfazUsuarioTexto {
 	 * @param controlador controlador
 	 */
 	public void init(Controlador controlador) {
+		super.init(controlador);
 		EstadoVista.sc = new Scanner(System.in); 
-		this.controladorKanban = controlador;
 		
 		while (true) {
 			estado.mostrarMenu(this);

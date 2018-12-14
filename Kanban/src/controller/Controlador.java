@@ -13,6 +13,7 @@ import model.Tarea;
 import persistence.PersistenciaAbstracta;
 import view.EstadoVista;
 import view.EstadoVistaPrincipal;
+import view.InterfazUsuarioAbstracta;
 import view.InterfazUsuarioTexto;
 
 /**
@@ -25,7 +26,7 @@ import view.InterfazUsuarioTexto;
 public class Controlador {
 
 	private PersistenciaAbstracta modeloKanban;
-	private InterfazUsuarioTexto vistaKanban;
+	private InterfazUsuarioAbstracta vistaKanban;
 
 
 	private static Controlador instancia = null;
@@ -56,7 +57,7 @@ public class Controlador {
 	 * @param modelo
 	 *            persistencia donde se accederan a los datos.
 	 */
-	public void init(InterfazUsuarioTexto vista, PersistenciaAbstracta modelo) {
+	public void init(InterfazUsuarioAbstracta vista, PersistenciaAbstracta modelo) {
 		this.vistaKanban = vista;
 		this.modeloKanban = modelo;
 
@@ -78,7 +79,7 @@ public class Controlador {
 	 * 
 	 * @return vistaKanban.
 	 */
-	public InterfazUsuarioTexto getVistaKanban() {
+	public InterfazUsuarioAbstracta getVistaKanban() {
 		return vistaKanban;
 	}
 

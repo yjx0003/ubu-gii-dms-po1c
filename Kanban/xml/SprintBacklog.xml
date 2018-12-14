@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SprintBacklog>
+  <descripcionSprint descripcion="Descripcion del sprint"/>
+  <fechaInicio>
+    <dia>10</dia>
+    <mes>11</mes>
+    <anio>2018</anio>
+  </fechaInicio>
   <tarea id="20">
     <coste>1</coste>
     <beneficio>1</beneficio>
