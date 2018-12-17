@@ -12,17 +12,12 @@ public class Main {
 	public static void main(String[] args) {
 		
 		InterfazUsuarioAbstracta vista = InterfazUsuarioTexto.getInstancia();
-		PersistenciaAbstracta modelo = PersistenciaXML.getInstancia(); 
+		PersistenciaAbstracta persistencia = PersistenciaXML.getInstancia(); 
 		
 		Controlador controlador = Controlador.getInstancia(); 
 		
-
-
-		controlador.init(vista,modelo);
+		controlador.init(vista, persistencia);
 		
-		
-		
-
 	}
 
 }

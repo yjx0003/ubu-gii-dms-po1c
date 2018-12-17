@@ -25,8 +25,6 @@ public class InterfazUsuarioTexto extends InterfazUsuarioAbstracta {
 
 	private EstadoVista estado;
 
-
-
 	private static InterfazUsuarioTexto instancia = null;
 
 	private InterfazUsuarioTexto() {
