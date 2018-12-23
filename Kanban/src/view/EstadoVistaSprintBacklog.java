@@ -1,8 +1,6 @@
 package view;
 
 import java.util.Map;
-
-import controller.Controlador;
 import model.SprintBacklog;
 import model.Tarea;
 

@@ -1,8 +1,6 @@
 package view;
 
 import java.util.Map;
-
-import controller.Controlador;
 import model.MiembroDeEquipo;
 
 public class EstadoVistaAnadirTarea extends EstadoVista{

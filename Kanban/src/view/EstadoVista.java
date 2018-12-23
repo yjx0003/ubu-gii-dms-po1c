@@ -3,8 +3,6 @@ package view;
 import java.util.Map;
 import java.util.Scanner;
 
-import controller.Controlador;
-
 /**
  * Estados posibles del controlador para mostrar los diferentes menus
  * 

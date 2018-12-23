@@ -1,6 +1,5 @@
 package view;
 
-import controller.Controlador;
 
 public class EstadoVistaPrincipal extends EstadoVista{
 	

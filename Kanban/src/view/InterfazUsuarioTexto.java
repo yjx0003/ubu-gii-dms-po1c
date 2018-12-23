@@ -1,17 +1,9 @@
 package view;
 
-import java.util.Map;
 import java.util.Scanner;
 
 import controller.Controlador;
-import model.Backlog;
-import model.EstadoTarea;
-import model.EstadoTareaCompletada;
-import model.EstadoTareaEnProceso;
-import model.MiembroDeEquipo;
-import model.ProductBacklog;
-import model.SprintBacklog;
-import model.Tarea;
+
 
 /**
  * Clase de la interfaz de usuario en texto, imprime todos los menus.

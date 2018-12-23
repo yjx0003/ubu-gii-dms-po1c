@@ -5,19 +5,17 @@ import java.util.Map;
 import model.Backlog;
 import model.Defecto;
 import model.EstadoTareaCompletada;
-import model.EstadoTareaEnValidacion;
 import model.HistoriaDeUsuario;
 import model.MiembroDeEquipo;
 import model.Requisito;
 import model.Tarea;
 import persistence.PersistenciaAbstracta;
-import view.EstadoVista;
-import view.EstadoVistaPrincipal;
 import view.InterfazUsuarioAbstracta;
-import view.InterfazUsuarioTexto;
+
 
 /**
- * Clase controlador encargado de enlazar la vista y el modelo.
+ * Clase controlador encargado de enlazar la vista y el modelo. 
+ * Contiene la lógica de negocio. 
  * 
  * @author Alicia Olivares Gil
  * @author Yi Peng Ji
@@ -31,9 +29,7 @@ public class Controlador {
 
 	private static Controlador instancia = null;
 
-	private Controlador(){
-		
-	}
+	private Controlador(){}
 
 	/**
 	 * Devuelve una instancia de Controlador.
@@ -48,9 +44,9 @@ public class Controlador {
 	}
 
 
-
 	/**
-	 * Inicia la vista y el modelo, tambien imprime el menu de la vista.
+	 * Inicia la vista y el modelo y lee la persistencia. 
+	 * Lanza la vista. 
 	 * 
 	 * @param vista
 	 *            instancia de la interfaz de usuario de texto.
@@ -241,7 +237,7 @@ public class Controlador {
 	}
 
 	/**
-	 * Cierra el scanner de teclado y guarda todos los ficheros csv y apaga la
+	 * Cierra el scanner de teclado y guarda todos los ficheros de persistencia y apaga la
 	 * maquina virtual de java.
 	 * 
 	 */

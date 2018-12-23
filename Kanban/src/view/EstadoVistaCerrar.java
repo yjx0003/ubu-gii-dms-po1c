@@ -1,6 +1,5 @@
 package view;
 
-import controller.Controlador;
 
 public class EstadoVistaCerrar extends EstadoVista {
 

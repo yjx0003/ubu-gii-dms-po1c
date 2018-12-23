@@ -1,6 +1,5 @@
 package view;
 
-import controller.Controlador;
 import model.Tarea;
 
 public class EstadoVistaTarea extends EstadoVista{
